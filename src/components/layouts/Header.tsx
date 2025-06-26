@@ -4,12 +4,12 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Link from "next/link";
 import React from "react";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Button from "@mui/material/Button";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { logout } from "../views/LoginPage/actions";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { AccountCircle } from "@mui/icons-material";
 
 const Header = () => {
   const router = useRouter();
@@ -58,23 +58,30 @@ const Header = () => {
         <Box component={Link} href="/" sx={{ fontWeight: 700, color: "navy" }}>
           <h2>BOSSHIRE</h2>
         </Box>
-        <Stack direction="row" gap={3} alignItems="center">
-          <Box
-            component="ul"
-            sx={{ listStyleType: "none" }}
-            display="flex"
-            gap={3}
-          >
-            {navs.map((nav) => (
-              <li key={nav.href}>
-                <Link href={nav.href}>{nav.label}</Link>
-              </li>
-            ))}
-          </Box>
-
+        <Box
+          component="ul"
+          sx={{ listStyleType: "none" }}
+          display="flex"
+          alignItems="center"
+          gap={3}
+        >
+          {navs.map((nav) => (
+            <li key={nav.href}>
+              <Link href={nav.href}>
+                {nav.icon ? (
+                  <nav.icon color="warning" sx={{ width: "1.6rem" }} />
+                ) : (
+                  <>{nav.label}</>
+                )}
+              </Link>
+            </li>
+          ))}
           {isAuthenticated ? (
             <>
-              <AccountCircleIcon />
+              <Link href="/profile">
+                <AccountCircle sx={{ width: "1.6rem" }} />
+              </Link>
+
               <Button variant="outlined" onClick={handleLogout}>
                 Logout
               </Button>
@@ -84,7 +91,7 @@ const Header = () => {
               <Button variant="outlined">Login</Button>
             </Link>
           )}
-        </Stack>
+        </Box>
       </Stack>
     </Box>
   );

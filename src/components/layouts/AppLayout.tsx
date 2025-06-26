@@ -35,7 +35,8 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
             <Box
               component="main"
               sx={{
-                minHeight: "100svh",
+                height: "100%",
+                minHeight: "100dvh",
                 paddingTop: "5rem",
                 paddingX: "2rem",
                 paddingBottom: "5rem",
