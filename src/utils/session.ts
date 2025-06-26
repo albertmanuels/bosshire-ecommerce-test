@@ -1,0 +1,20 @@
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+const oneDay = 1 * 24 * 60 * 60 * 1000
+
+export async function createSession(token: string) {
+  const expiresAt = new Date(Date.now() + oneDay);
+  (await cookies()).set("token", token, {
+    expires: expiresAt, 
+    httpOnly: true, 
+    secure: true, 
+    path: "/" 
+  })
+
+   redirect('/');
+}
+
+export async function deleteSession() {
+  (await cookies()).delete("token");
+}
