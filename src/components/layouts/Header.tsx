@@ -8,14 +8,36 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Button from "@mui/material/Button";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { logout } from "../views/LoginPage/actions";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
+  const router = useRouter();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   const publicNavs = navItems.filter(
     (nav) => !protectedRoutes.includes(nav.href)
   );
   const navs = isAuthenticated ? navItems : publicNavs;
+
+  const handleLogout = async () => {
+    try {
+      const result = await logout();
+
+      if (result.success) {
+        toast.success("Logout success!");
+        router.push("/login");
+      } else {
+        throw new Error(String(result.error));
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unknown error occurred.");
+      }
+    }
+  };
 
   return (
     <Box
@@ -53,7 +75,7 @@ const Header = () => {
           {isAuthenticated ? (
             <>
               <AccountCircleIcon />
-              <Button variant="outlined" onClick={() => logout()}>
+              <Button variant="outlined" onClick={handleLogout}>
                 Logout
               </Button>
             </>

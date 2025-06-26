@@ -1,7 +1,6 @@
 "use server"
 import { API_URL } from "@/constants/config"
 import { createSession, deleteSession } from "@/utils/session"
-import { redirect } from "next/navigation"
 import * as yup from "yup"
 
 const LoginSchema = yup.object({
@@ -9,7 +8,7 @@ const LoginSchema = yup.object({
   password: yup.string().min(8, "Password must be at least 8 characters").required("Password is required")
 })
 
-export async function login(_: unknown, formData: FormData) {
+export async function loginActions(_: unknown, formData: FormData) {
   const raw = {
     username: formData.get("username"),
     password: formData.get("password")
@@ -27,7 +26,7 @@ export async function login(_: unknown, formData: FormData) {
       const errText = res.statusText
       return {
         success: false,
-        erros: `API error - ${res.status} - ${errText}`
+        error: errText
       }
     }
 
@@ -35,12 +34,21 @@ export async function login(_: unknown, formData: FormData) {
   const token = data.token
  
   await createSession(token)
+  
+  return {
+    success: true
+  }
 
   } catch (error) {
     if (error instanceof yup.ValidationError) {
+      const fieldErrors: Record<string, string> = {};
+      error.inner.forEach((e) => {
+        if (e.path) fieldErrors[e.path] = e.message;
+      });
+
       return {
         success: false,
-        errors: error.errors,
+        fieldErrors
       };
     }
 
@@ -49,6 +57,17 @@ export async function login(_: unknown, formData: FormData) {
 }
 
 export async function logout() {
-  await deleteSession();
-  redirect("/login");
+  try {
+    await deleteSession();
+
+    return {
+      success: true,
+      error: null
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: error
+    }
+  }
 }

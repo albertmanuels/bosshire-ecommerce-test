@@ -12,7 +12,6 @@ export async function createSession(token: string) {
     path: "/" 
   })
 
-   redirect('/');
 }
 
 export async function deleteSession() {
