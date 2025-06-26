@@ -38,6 +38,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
                 minHeight: "100svh",
                 paddingTop: "5rem",
                 paddingX: "2rem",
+                paddingBottom: "5rem",
               }}
             >
               {children}

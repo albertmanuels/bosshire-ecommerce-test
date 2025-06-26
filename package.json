@@ -12,6 +12,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.1.2",
     "@mui/material-nextjs": "^7.1.1",
+    "@tanstack/react-query": "^5.81.2",
     "jose": "^6.0.11",
     "next": "15.3.4",
     "react": "^19.0.0",

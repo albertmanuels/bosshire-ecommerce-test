@@ -5,6 +5,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import React, { ReactNode } from "react";
 import { AuthProvider } from "./AuthProvider";
 import { ToastContainer } from "react-toastify";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 type Props = {
   children: ReactNode;
@@ -12,11 +13,15 @@ type Props = {
 };
 
 const Providers = ({ hasToken, children }: Props) => {
+  const queryClient = new QueryClient();
+
   return (
     <AppRouterCacheProvider>
       <ThemeProvider theme={theme}>
-        <AuthProvider hasToken={hasToken}>{children}</AuthProvider>
-        <ToastContainer autoClose={3000} position="bottom-right" />
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider hasToken={hasToken}>{children}</AuthProvider>
+          <ToastContainer autoClose={3000} position="bottom-right" />
+        </QueryClientProvider>
       </ThemeProvider>
     </AppRouterCacheProvider>
   );
