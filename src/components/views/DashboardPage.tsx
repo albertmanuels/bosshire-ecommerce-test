@@ -35,7 +35,9 @@ const DashboardPage = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Typography variant="h4">Dashboard</Typography>
+      <Typography variant="h4" fontWeight={500} marginBottom={3}>
+        Dashboard
+      </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ width: "100%" }} aria-label="simple table">
           <TableHead>

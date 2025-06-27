@@ -1,26 +1,21 @@
 "use client";
 import React from "react";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import CartTable from "@/components/shared/CartTable";
-import {
-  TableData,
-  TableHeader,
-} from "@/components/shared/CartTable/CartTable";
-import { BorderColor, Delete, Visibility } from "@mui/icons-material";
-import NumberStepper from "@/components/shared/NumberStepper";
+import { TableHeader } from "@/components/shared/CartTable/CartTable";
+import { Visibility } from "@mui/icons-material";
+import useGetAllCarts from "@/services/useGetAllCarts";
 
 const CartPage = () => {
-  const tableData: TableData[] = [
-    {
-      id: 234,
-      image: "xx",
-      product: "Product 99",
-      category: "Men's outfit",
-      price: 10.99,
-      quantity: 2,
-      total: 21.98,
-    },
-  ];
+  const { data: carts, isLoading } = useGetAllCarts();
+
+  const tableData = carts
+    ? carts.map((cart) => ({
+        image: "-",
+        id: cart.id,
+        userId: cart?.userId,
+      }))
+    : [];
 
   const tableHeader: TableHeader[] = [
     {
@@ -31,30 +26,12 @@ const CartPage = () => {
       },
     },
     {
-      key: "product",
-      label: "Product Name",
+      key: "id",
+      label: "Cart ID",
     },
     {
-      key: "category",
-      label: "Category",
-    },
-    {
-      key: "quantity",
-      label: "Quantity",
-      render: () => (
-        <Stack direction="row" justifyContent="center">
-          <NumberStepper onChange={() => {}} value={4} />
-        </Stack>
-      ),
-      align: "center",
-    },
-    {
-      key: "total",
-      label: "Total",
-      render: (row) => <Typography>{row?.total}</Typography>,
-      sx: {
-        textAlign: "center",
-      },
+      key: "userId",
+      label: "user ID",
     },
     {
       key: "action",
@@ -65,23 +42,20 @@ const CartPage = () => {
           onClick: () => {},
           color: "info",
         },
-        {
-          icon: BorderColor,
-          onClick: () => {},
-          color: "success",
-        },
-        {
-          icon: Delete,
-          onClick: () => {},
-          color: "error",
-        },
       ],
     },
   ];
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <CartTable tableData={tableData} tableHeader={tableHeader} />
+      <Typography variant="h4" fontWeight={500} marginBottom={3}>
+        Shopping Cart
+      </Typography>
+      <CartTable
+        tableData={tableData}
+        tableHeader={tableHeader}
+        isLoading={isLoading}
+      />
     </Box>
   );
 };

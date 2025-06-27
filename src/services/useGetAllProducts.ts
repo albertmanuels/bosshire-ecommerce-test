@@ -2,7 +2,7 @@ import { API_URL } from '@/constants/config';
 import { ONE_MINUTE } from '@/constants/globals';
 import { useQuery } from '@tanstack/react-query';
 
-interface Product {
+export interface Product {
   id: string;
   title: string;
   category: string;

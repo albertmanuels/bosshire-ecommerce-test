@@ -3,6 +3,7 @@
 import React, { ComponentType, JSX, useMemo, useState } from "react";
 import {
   Box,
+  CircularProgress,
   IconButton,
   Paper,
   Stack,
@@ -18,7 +19,6 @@ import {
   TablePagination,
   TableRow,
   Theme,
-  Typography,
 } from "@mui/material";
 import SearchBar from "../SearchBar";
 
@@ -32,15 +32,7 @@ type Action = {
 type ActionOptions = (row?: TableData) => Action[] | Action[];
 
 export interface TableHeader {
-  key:
-    | "image"
-    | "product"
-    | "category"
-    | "price"
-    | "quantity"
-    | "total"
-    | "action"
-    | "id";
+  key: string;
   label: string;
   sx?: TableCellProps["sx"];
   actionOptions?: ActionOptions;
@@ -54,10 +46,16 @@ type CartTableProps = {
   tableData: TableData[];
   tableHeader: TableHeader[];
   itemsPerPage?: number;
+  isLoading: boolean;
 };
 
 const CartTable = (props: CartTableProps) => {
-  const { tableData, tableHeader, itemsPerPage: _itemPerPage = 5 } = props;
+  const {
+    tableData,
+    tableHeader,
+    isLoading,
+    itemsPerPage: _itemPerPage = 5,
+  } = props;
   const [page, setPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(_itemPerPage);
   const [search, setSearch] = useState("");
@@ -101,19 +99,24 @@ const CartTable = (props: CartTableProps) => {
   };
 
   const filteredProducts = useMemo(() => {
-    return tableData?.filter((data) =>
-      data.product.toLowerCase().includes(search.toLowerCase())
-    );
+    if (!!search) {
+      return tableData.filter((data) =>
+        data.product?.toLowerCase().includes(search.toLowerCase())
+      );
+    } else {
+      return tableData;
+    }
   }, [search, tableData]);
 
   const renderBody = (tableData: TableData[], tableHeader: TableHeader[]) => {
-    const slicedData = tableData?.slice(
+    const slicedData = filteredProducts.slice(
       page * itemsPerPage,
       page * itemsPerPage + itemsPerPage
     );
+
     return (
       <>
-        {slicedData.map((row) => (
+        {slicedData?.map((row) => (
           <TableRow key={row.id}>
             {tableHeader.map(({ align = "center", ...column }) => {
               const value = row[column.key];
@@ -164,11 +167,18 @@ const CartTable = (props: CartTableProps) => {
     );
   };
 
+  const renderLoadingRow = (colSpan: number) => {
+    <TableRow>
+      <TableCell colSpan={colSpan}>
+        <Box display="flex" justifyContent="center" py={2}>
+          <CircularProgress size={24} />
+        </Box>
+      </TableCell>
+    </TableRow>;
+  };
+
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", padding: 4 }}>
-      <Typography variant="h4" fontWeight={500} marginBottom={3}>
-        Shopping Cart
-      </Typography>
       <Box width="26vw" marginBottom={3}>
         <SearchBar
           value={search}
@@ -179,13 +189,19 @@ const CartTable = (props: CartTableProps) => {
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader>
           <TableHead>{renderHeader()}</TableHead>
-          <TableBody>{renderBody(filteredProducts, tableHeader)}</TableBody>
+          <TableBody>
+            {isLoading ? (
+              <>{renderLoadingRow(tableHeader.length)}</>
+            ) : (
+              <>{renderBody(filteredProducts, tableHeader)}</>
+            )}
+          </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
         rowsPerPageOptions={[5, 10, 15]}
         component="div"
-        count={tableData.length}
+        count={tableData?.length}
         rowsPerPage={itemsPerPage}
         page={page}
         onPageChange={handleChangePage}
