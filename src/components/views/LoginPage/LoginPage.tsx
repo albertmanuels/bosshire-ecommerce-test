@@ -7,11 +7,12 @@ import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { loginActions } from "./actions";
+import { loginActions, LoginSchema } from "./actions";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { ADMIN } from "@/constants/user";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 type FormValues = {
   username: string;
@@ -20,7 +21,13 @@ type FormValues = {
 
 const LoginPage = () => {
   const router = useRouter();
-  const { register, handleSubmit, setError } = useForm<FormValues>();
+  const { register, handleSubmit, setError } = useForm<FormValues>({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+    resolver: yupResolver(LoginSchema),
+  });
 
   const onSubmit = async (data: FormValues) => {
     const formData = new FormData();
@@ -37,7 +44,7 @@ const LoginPage = () => {
         });
       }
 
-      toast.error("Error!");
+      toast.error(result?.error);
       return;
     }
 
