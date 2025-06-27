@@ -111,10 +111,12 @@ const Table = (props: TableProps) => {
     );
   };
 
+  console.log(tableData);
+
   const filteredProducts = useMemo(() => {
     if (!!search) {
       return tableData.filter((data) =>
-        data.product?.toLowerCase().includes(search.toLowerCase())
+        data.title.toLowerCase().includes(search.toLowerCase())
       );
     } else {
       return tableData;
@@ -220,7 +222,7 @@ const Table = (props: TableProps) => {
             <SearchBar
               value={search}
               onChange={setSearch}
-              placeholder="Search products..."
+              placeholder="Search products by title"
             />
           </Box>
         )}
