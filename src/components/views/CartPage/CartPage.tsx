@@ -1,26 +1,35 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import Table from "@/components/shared/Table";
 import { TableHeader } from "@/components/shared/Table/Table";
-import { FormatListBulleted } from "@mui/icons-material";
+import { FormatListBulleted, AddBox } from "@mui/icons-material";
 import useGetAllCarts from "@/services/useGetAllCarts";
 import { formatDateToLong } from "@/utils/date";
 import CartDetailModal from "./CartDetailModal";
+import { useCartStore } from "@/stores/useCartStore";
 
 const CartPage = () => {
-  const { data: carts, isLoading } = useGetAllCarts();
+  const { allCarts, setAllCarts } = useCartStore();
+
+  const { data: carts, isLoading, isSuccess } = useGetAllCarts();
   const [open, setOpen] = React.useState(false);
   const [currentViewCartId, setCurrentViewCartId] = useState(null);
 
-  const tableData = carts
-    ? carts.map((cart) => ({
+  useEffect(() => {
+    if (allCarts.length == 0 && isSuccess) {
+      setAllCarts(carts);
+    }
+  }, [allCarts.length, carts, isSuccess, setAllCarts]);
+
+  const tableData = allCarts
+    ? allCarts.map((cart) => ({
         ...cart,
         id: cart.id,
         userId: cart?.userId,
         totalProducts: cart?.products.length,
         totalQuantity: cart?.products.reduce(
-          (acc, curr) => acc + curr.quantity,
+          (acc: number, curr: { quantity: number }) => acc + curr.quantity,
           0
         ),
         createdAt: formatDateToLong(cart.date),
@@ -81,6 +90,15 @@ const CartPage = () => {
         tableHeader={tableHeader}
         isLoading={isLoading}
         withSearch={true}
+        buttons={[
+          {
+            label: "Add a new cart",
+            onClick: () => {},
+            color: "primary",
+            variant: "contained",
+            startIcon: <AddBox />,
+          },
+        ]}
       />
       <CartDetailModal
         open={open}

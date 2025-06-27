@@ -19,6 +19,8 @@ import {
   TablePagination,
   TableRow,
   Theme,
+  Button,
+  ButtonProps,
 } from "@mui/material";
 import SearchBar from "../SearchBar";
 import Image from "next/image";
@@ -44,12 +46,18 @@ export interface TableHeader {
 
 export type TableData = Partial<Record<TableHeader["key"], any>>;
 
+type TopButton = ButtonProps & {
+  onClick: () => void;
+  label: string;
+};
+
 type TableProps = {
   tableData: TableData[];
   tableHeader: TableHeader[];
   itemsPerPage?: number;
   isLoading: boolean;
   withSearch?: boolean;
+  buttons?: TopButton[];
 };
 
 const Table = (props: TableProps) => {
@@ -58,6 +66,7 @@ const Table = (props: TableProps) => {
     tableHeader,
     isLoading,
     withSearch = false,
+    buttons = [],
     itemsPerPage: _itemPerPage = 5,
   } = props;
   const [page, setPage] = useState(0);
@@ -200,15 +209,35 @@ const Table = (props: TableProps) => {
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", padding: 4 }}>
-      {withSearch && (
-        <Box width="26vw" marginBottom={3}>
-          <SearchBar
-            value={search}
-            onChange={setSearch}
-            placeholder="Search products..."
-          />
+      <Stack
+        direction="row"
+        alignItems="center"
+        marginBottom={3}
+        justifyContent={withSearch ? "space-between" : "flex-end"}
+      >
+        {withSearch && (
+          <Box width="26vw">
+            <SearchBar
+              value={search}
+              onChange={setSearch}
+              placeholder="Search products..."
+            />
+          </Box>
+        )}
+        <Box>
+          {buttons &&
+            buttons.map((btn, idx) => (
+              <Button
+                key={idx}
+                {...btn}
+                sx={{ marginLeft: !withSearch ? "auto" : "" }}
+              >
+                {btn.label}
+              </Button>
+            ))}
         </Box>
-      )}
+      </Stack>
+
       <TableContainer sx={{ maxHeight: 440 }}>
         <MuiTable stickyHeader>
           <TableHead>{renderHeader()}</TableHead>

@@ -1,6 +1,6 @@
 import { API_URL } from '@/constants/config'
 import { ONE_MINUTE } from '@/constants/globals'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
 export interface Cart {
   id: number;
@@ -14,6 +14,7 @@ export interface Cart {
 
 const useGetAllCarts = () => {
   const query = useQuery<Cart[]>({
+    placeholderData: keepPreviousData,
     queryFn: async (): Promise<Cart[]>  => {
       const res = await fetch(`${API_URL}/carts`)
       const data = await res.json()
