@@ -1,7 +1,7 @@
 import { ADMIN } from '@/constants/user';
 import { create } from 'zustand';
 
-type User = typeof ADMIN
+export type User = typeof ADMIN
 
 type AuthState = {
   isAuthenticated: boolean;

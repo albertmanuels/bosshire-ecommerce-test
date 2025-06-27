@@ -8,7 +8,6 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import { cookies } from "next/headers";
 import Providers from "./Providers";
-import DashboardLayout from "./DashboardLayout";
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
@@ -29,9 +28,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body className={roboto.className}>
         <Providers hasToken={hasToken}>
-          <Stack spacing={2}>
-            <DashboardLayout>{children}</DashboardLayout>
-          </Stack>
+          <Stack spacing={2}>{children}</Stack>
         </Providers>
       </body>
     </html>

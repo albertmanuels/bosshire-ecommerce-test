@@ -3,7 +3,7 @@ import React, { JSX } from "react";
 import MuiDrawer from "@mui/material/Drawer";
 
 import { CSSObject, styled, Theme, useTheme } from "@mui/material/styles";
-import { Divider, List } from "@mui/material";
+import { Box, Divider, List } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -13,6 +13,10 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import { AccountCircle, Logout } from "@mui/icons-material";
+import { logout } from "@/components/views/LoginPage/actions";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 type SidebarItem = {
   key: string;
@@ -82,11 +86,32 @@ type SidebarMenuProps = {
   sidebarItems?: SidebarItem[];
   open: boolean;
   handleDrawerClose: () => void;
+  username: string;
 };
 
 const SidebarMenu = (props: SidebarMenuProps) => {
-  const { open, handleDrawerClose } = props;
+  const { open, handleDrawerClose, username } = props;
   const theme = useTheme();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      const result = await logout();
+
+      if (result.success) {
+        toast.success("Logout success!");
+        router.push("/login");
+      } else {
+        throw new Error(String(result.error));
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unknown error occurred.");
+      }
+    }
+  };
 
   return (
     <Drawer variant="permanent" open={open}>
@@ -151,58 +176,102 @@ const SidebarMenu = (props: SidebarMenuProps) => {
           </ListItem>
         ))}
       </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ display: "block" }}>
-            <ListItemButton
+      <Box sx={{ marginTop: "auto" }}>
+        <ListItem key="logout" disablePadding sx={{ display: "block" }}>
+          <ListItemButton
+            onClick={handleLogout}
+            sx={[
+              {
+                minHeight: 48,
+                px: 2.5,
+              },
+              open
+                ? {
+                    justifyContent: "initial",
+                  }
+                : {
+                    justifyContent: "center",
+                  },
+            ]}
+          >
+            <ListItemIcon
               sx={[
                 {
-                  minHeight: 48,
-                  px: 2.5,
+                  minWidth: 0,
+                  justifyContent: "center",
                 },
                 open
                   ? {
-                      justifyContent: "initial",
+                      mr: 3,
                     }
                   : {
-                      justifyContent: "center",
+                      mr: "auto",
                     },
               ]}
             >
-              <ListItemIcon
-                sx={[
-                  {
-                    minWidth: 0,
+              <AccountCircle />
+            </ListItemIcon>
+            <ListItemText
+              primary={`Hi ${username}`}
+              sx={[
+                open
+                  ? {
+                      opacity: 1,
+                    }
+                  : {
+                      opacity: 0,
+                    },
+              ]}
+            />
+          </ListItemButton>
+          <ListItemButton
+            onClick={logout}
+            sx={[
+              {
+                minHeight: 48,
+                px: 2.5,
+              },
+              open
+                ? {
+                    justifyContent: "initial",
+                  }
+                : {
                     justifyContent: "center",
                   },
-                  open
-                    ? {
-                        mr: 3,
-                      }
-                    : {
-                        mr: "auto",
-                      },
-                ]}
-              >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText
-                primary={text}
-                sx={[
-                  open
-                    ? {
-                        opacity: 1,
-                      }
-                    : {
-                        opacity: 0,
-                      },
-                ]}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+            ]}
+          >
+            <ListItemIcon
+              sx={[
+                {
+                  minWidth: 0,
+                  justifyContent: "center",
+                },
+                open
+                  ? {
+                      mr: 3,
+                    }
+                  : {
+                      mr: "auto",
+                    },
+              ]}
+            >
+              <Logout />
+            </ListItemIcon>
+            <ListItemText
+              primary="Logout"
+              sx={[
+                open
+                  ? {
+                      opacity: 1,
+                    }
+                  : {
+                      opacity: 0,
+                    },
+              ]}
+            />
+          </ListItemButton>
+        </ListItem>
+      </Box>
     </Drawer>
   );
 };
