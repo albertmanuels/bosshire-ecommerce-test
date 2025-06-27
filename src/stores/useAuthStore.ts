@@ -1,22 +1,21 @@
-// stores/auth.ts
+import { ADMIN } from '@/constants/user';
 import { create } from 'zustand';
 
-type User = { username: string };
+type User = typeof ADMIN
 
 type AuthState = {
   isAuthenticated: boolean;
   user: User | null;
-  setUser: (user: User) => void;
   logout: () => void;
-  login: () => void
+  login: (user: User) => void
 };
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
-  setUser: (user) => set({ user, isAuthenticated: true }),
-  login: () => set({
-    isAuthenticated: true
+  login: (user) => set({
+    isAuthenticated: true,
+    user
   }),
   logout: () => set({ user: null, isAuthenticated: false }),
 }));

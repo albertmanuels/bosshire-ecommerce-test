@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 import { useAuthStore } from "@/stores/useAuthStore";
+import useGetUserById from "@/services/useGetUserById";
+import { ADMIN } from "@/constants/user";
 
 export function AuthProvider({
   children,
@@ -12,13 +14,15 @@ export function AuthProvider({
 }) {
   const { login, logout } = useAuthStore((s) => s);
 
+  const { data: user, isSuccess } = useGetUserById({ id: ADMIN.id });
+
   useEffect(() => {
-    if (hasToken) {
-      login();
+    if (hasToken && isSuccess) {
+      login(user);
     } else {
       logout();
     }
-  }, [hasToken, login, logout]);
+  }, [hasToken, isSuccess, login, logout, user]);
 
   return <>{children}</>;
 }

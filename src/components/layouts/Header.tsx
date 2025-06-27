@@ -10,10 +10,11 @@ import { logout } from "../views/LoginPage/actions";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { AccountCircle } from "@mui/icons-material";
+import { Typography } from "@mui/material";
 
 const Header = () => {
   const router = useRouter();
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const { isAuthenticated, user } = useAuthStore();
 
   const publicNavs = navItems.filter(
     (nav) => !protectedRoutes.includes(nav.href)
@@ -79,7 +80,10 @@ const Header = () => {
           {isAuthenticated ? (
             <>
               <Link href="/profile">
-                <AccountCircle sx={{ width: "1.6rem" }} />
+                <Stack direction="row" gap={1}>
+                  <AccountCircle sx={{ width: "1.6rem" }} />
+                  <Typography>Hi {user?.username}</Typography>
+                </Stack>
               </Link>
 
               <Button variant="outlined" onClick={handleLogout}>
