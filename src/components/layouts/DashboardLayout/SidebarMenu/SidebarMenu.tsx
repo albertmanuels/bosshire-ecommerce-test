@@ -1,9 +1,9 @@
 "use client";
-import React, { JSX } from "react";
+import React, { ComponentType } from "react";
 import MuiDrawer from "@mui/material/Drawer";
 
 import { CSSObject, styled, Theme, useTheme } from "@mui/material/styles";
-import { Box, Divider, List } from "@mui/material";
+import { Box, Divider, List, SvgIconProps } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -11,8 +11,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { AccountCircle, Logout } from "@mui/icons-material";
 import { logout } from "@/components/views/LoginPage/actions";
 import { toast } from "react-toastify";
@@ -22,7 +20,7 @@ type SidebarItem = {
   key: string;
   href: string;
   label: string;
-  icon: JSX.Element;
+  icon: ComponentType<SvgIconProps>;
 };
 
 const drawerWidth = 240;
@@ -83,14 +81,14 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 type SidebarMenuProps = {
-  sidebarItems?: SidebarItem[];
+  sidebarItems: SidebarItem[];
   open: boolean;
   handleDrawerClose: () => void;
   username: string;
 };
 
 const SidebarMenu = (props: SidebarMenuProps) => {
-  const { open, handleDrawerClose, username } = props;
+  const { open, handleDrawerClose, username, sidebarItems } = props;
   const theme = useTheme();
   const router = useRouter();
 
@@ -126,8 +124,8 @@ const SidebarMenu = (props: SidebarMenuProps) => {
       </DrawerHeader>
       <Divider />
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ display: "block" }}>
+        {sidebarItems.map((item) => (
+          <ListItem key={item.key} disablePadding sx={{ display: "block" }}>
             <ListItemButton
               sx={[
                 {
@@ -158,10 +156,10 @@ const SidebarMenu = (props: SidebarMenuProps) => {
                       },
                 ]}
               >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                <item.icon />
               </ListItemIcon>
               <ListItemText
-                primary={text}
+                primary={item.label}
                 sx={[
                   open
                     ? {

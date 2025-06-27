@@ -12,6 +12,8 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { ADMIN } from "@/constants/user";
+import { ContentCopy } from "@mui/icons-material";
+import { Typography } from "@mui/material";
 
 type FormValues = {
   username: string;
@@ -89,8 +91,25 @@ const LoginPage = () => {
               <Button variant="contained" type="submit">
                 Login
               </Button>
-              <p>Username: {ADMIN.username}</p>
-              <p>Password: {ADMIN.password}</p>
+              <Stack gap={1}>
+                <Typography>Admin account</Typography>
+                <Button
+                  onClick={() => {
+                    navigator.clipboard.writeText(ADMIN.username);
+                  }}
+                >
+                  Username: {ADMIN.username}
+                  <ContentCopy />
+                </Button>
+                <Button
+                  onClick={() => {
+                    navigator.clipboard.writeText(ADMIN.password);
+                  }}
+                >
+                  <p>Password: {ADMIN.password}</p>
+                  <ContentCopy />
+                </Button>
+              </Stack>
             </Stack>
           </form>
         </CardContent>

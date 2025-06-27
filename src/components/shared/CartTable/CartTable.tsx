@@ -73,12 +73,6 @@ const CartTable = (props: CartTableProps) => {
     setPage(0);
   };
 
-  const filteredProducts = useMemo(() => {
-    return tableData.filter((data) =>
-      data.product.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [search, tableData]);
-
   const renderHeader = () => {
     return (
       <TableRow>
@@ -106,8 +100,14 @@ const CartTable = (props: CartTableProps) => {
     );
   };
 
+  const filteredProducts = useMemo(() => {
+    return tableData?.filter((data) =>
+      data.product.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [search, tableData]);
+
   const renderBody = (tableData: TableData[], tableHeader: TableHeader[]) => {
-    const slicedData = filteredProducts.slice(
+    const slicedData = tableData?.slice(
       page * itemsPerPage,
       page * itemsPerPage + itemsPerPage
     );
@@ -179,7 +179,7 @@ const CartTable = (props: CartTableProps) => {
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader>
           <TableHead>{renderHeader()}</TableHead>
-          <TableBody>{renderBody(tableData, tableHeader)}</TableBody>
+          <TableBody>{renderBody(filteredProducts, tableHeader)}</TableBody>
         </Table>
       </TableContainer>
       <TablePagination
