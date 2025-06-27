@@ -1,5 +1,6 @@
 "use server"
 import { API_URL } from "@/constants/config"
+import { ADMIN } from "@/constants/user"
 import { createSession, deleteSession } from "@/utils/session"
 import * as yup from "yup"
 
@@ -15,30 +16,38 @@ export async function loginActions(_: unknown, formData: FormData) {
   }
 
   try {
-    const credentials = await LoginSchema.validate(raw, {abortEarly: false})
-    const res = await fetch(`${API_URL}/auth/login`, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(credentials)
-    })
+     const credentials = await LoginSchema.validate(raw, {abortEarly: false})
+    if(credentials.username === ADMIN.username && credentials.password === ADMIN.password) {
+      const res = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(credentials)
+      })
 
-    if(!res.ok) {
-      const errText = res.statusText
+        if(!res.ok) {
+          throw new Error(res.statusText)
+          // const errText = res.statusText
+          // return {
+          //   success: false,
+          //   error: errText
+          // }
+        }
+
+        const data = await res.json()
+        const token = data.token
+
+        await createSession(token)
+
+        return {
+          success: true
+        }
+    } else {
       return {
         success: false,
-        error: errText
+        error: "Your are not allowed to access dashboard!"
       }
     }
-
-  const data = await res.json()
-  const token = data.token
- 
-  await createSession(token)
-  
-  return {
-    success: true
-  }
-
+   
   } catch (error) {
     if (error instanceof yup.ValidationError) {
       const fieldErrors: Record<string, string> = {};
