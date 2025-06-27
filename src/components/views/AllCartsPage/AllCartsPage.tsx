@@ -9,7 +9,7 @@ import { formatDateToLong } from "@/utils/date";
 import CartDetailModal from "./CartDetailModal";
 import { useCartStore } from "@/stores/useCartStore";
 
-const CartPage = () => {
+const AllCartsPage = () => {
   const { allCarts, setAllCarts } = useCartStore();
 
   const { data: carts, isLoading, isSuccess } = useGetAllCarts();
@@ -46,7 +46,7 @@ const CartPage = () => {
     },
     {
       key: "userId",
-      label: "user ID",
+      label: "User ID",
     },
     {
       key: "totalProducts",
@@ -77,13 +77,16 @@ const CartPage = () => {
           color: "action",
         },
       ],
+      sx: {
+        width: "10%",
+      },
     },
   ];
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Typography variant="h4" fontWeight={500} marginBottom={3}>
-        Shopping Cart
+        All User Carts
       </Typography>
       <Table
         tableData={tableData}
@@ -109,4 +112,4 @@ const CartPage = () => {
   );
 };
 
-export default CartPage;
+export default AllCartsPage;

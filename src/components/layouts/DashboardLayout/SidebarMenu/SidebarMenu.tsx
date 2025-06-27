@@ -3,7 +3,7 @@ import React, { ComponentType } from "react";
 import MuiDrawer from "@mui/material/Drawer";
 
 import { CSSObject, styled, Theme, useTheme } from "@mui/material/styles";
-import { Box, Divider, List, SvgIconProps } from "@mui/material";
+import { Badge, Box, Divider, List, SvgIconProps } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -164,7 +164,13 @@ const SidebarMenu = (props: SidebarMenuProps) => {
                         },
                   ]}
                 >
-                  <item.icon />
+                  {item.key === "cart" ? (
+                    <Badge badgeContent={99} color="primary">
+                      <item.icon />
+                    </Badge>
+                  ) : (
+                    <item.icon />
+                  )}
                 </ListItemIcon>
                 <ListItemText
                   primary={item.label}

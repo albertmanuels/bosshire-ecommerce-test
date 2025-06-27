@@ -7,6 +7,7 @@ interface CartState {
   allCarts: Cart[];
   setAllCarts: (allCarts: Cart[]) => void;
   newCart: Cart | null;
+  setNewCart: (newCart: Cart) => void;
   addCart: (cart:Cart) => void;
 }
 
@@ -17,6 +18,7 @@ export const useCartStore = create<CartState>()(
       newCart: null,
       addCart: (cart: Cart) => set(state => ({allCarts: [...state.allCarts, cart]})),
       setAllCarts: (allCarts: Cart[]) => set({ allCarts }),
+      setNewCart: (newCart) => set({newCart})
     }),
     {
       name: "cart-storage",
