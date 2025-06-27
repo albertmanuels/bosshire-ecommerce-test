@@ -21,6 +21,7 @@ import {
   Theme,
 } from "@mui/material";
 import SearchBar from "../SearchBar";
+import Image from "next/image";
 
 type Action = {
   onClick: (row?: TableData) => void;
@@ -34,6 +35,7 @@ type ActionOptions = (row?: TableData) => Action[] | Action[];
 export interface TableHeader {
   key: string;
   label: string;
+  type?: "action" | "image";
   sx?: TableCellProps["sx"];
   actionOptions?: ActionOptions;
   align?: TableCellProps["align"];
@@ -47,6 +49,7 @@ type TableProps = {
   tableHeader: TableHeader[];
   itemsPerPage?: number;
   isLoading: boolean;
+  withSearch?: boolean;
 };
 
 const Table = (props: TableProps) => {
@@ -54,6 +57,7 @@ const Table = (props: TableProps) => {
     tableData,
     tableHeader,
     isLoading,
+    withSearch = false,
     itemsPerPage: _itemPerPage = 5,
   } = props;
   const [page, setPage] = useState(0);
@@ -130,14 +134,31 @@ const Table = (props: TableProps) => {
                   ? column.actionOptions(row)
                   : column.actionOptions;
 
-              if (column.key === "action") {
+              if (column.type === "image") {
+                return (
+                  <TableCell key={column.key} align="left">
+                    <Image
+                      src={value}
+                      alt={`image-${value}-${row.id}`}
+                      width={60}
+                      height={60}
+                      priority
+                      style={{ objectFit: "contain" }}
+                    />
+                  </TableCell>
+                );
+              }
+
+              if (column.type === "action") {
                 return (
                   <TableCell key={column.key} align="left">
                     <Stack direction="row" spacing={1} justifyContent="center">
                       {options?.map((option, idx) => (
                         <IconButton
                           key={idx}
-                          onClick={() => option.onClick(row)}
+                          onClick={() => {
+                            option.onClick(row);
+                          }}
                         >
                           <option.icon color={option.color} />
                         </IconButton>
@@ -179,13 +200,15 @@ const Table = (props: TableProps) => {
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", padding: 4 }}>
-      <Box width="26vw" marginBottom={3}>
-        <SearchBar
-          value={search}
-          onChange={setSearch}
-          placeholder="Search products..."
-        />
-      </Box>
+      {withSearch && (
+        <Box width="26vw" marginBottom={3}>
+          <SearchBar
+            value={search}
+            onChange={setSearch}
+            placeholder="Search products..."
+          />
+        </Box>
+      )}
       <TableContainer sx={{ maxHeight: 440 }}>
         <MuiTable stickyHeader>
           <TableHead>{renderHeader()}</TableHead>

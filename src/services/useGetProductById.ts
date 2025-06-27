@@ -17,7 +17,7 @@ const useGetProductById = ({id}: {id: number}) => {
 
       return data
     },
-    queryKey: ["product"]
+    queryKey: ["product", id]
   })
   return query
 }

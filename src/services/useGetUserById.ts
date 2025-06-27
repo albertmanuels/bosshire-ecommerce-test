@@ -1,8 +1,9 @@
 import { API_URL } from '@/constants/config'
 import { ONE_MINUTE } from '@/constants/globals'
-import { useQuery } from '@tanstack/react-query'
+import { User } from '@/stores/useAuthStore'
+import {  useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-const useGetUserById = ({id}: {id: number}) => {
+const useGetUserById = ({id}: {id: number}, options?: Partial<UseQueryOptions<User>>) => {
   const query = useQuery({
     queryFn: async () => {
       const res = await fetch(`${API_URL}/users/${id}`)
@@ -10,8 +11,9 @@ const useGetUserById = ({id}: {id: number}) => {
 
       return data
     },
-    queryKey: ["user"],
-    staleTime: ONE_MINUTE
+    queryKey: ["user", id],
+    staleTime: ONE_MINUTE,
+    ...options
   })
 
   return query

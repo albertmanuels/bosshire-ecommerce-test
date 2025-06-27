@@ -1,6 +1,6 @@
 import { API_URL } from '@/constants/config';
 import { ONE_MINUTE } from '@/constants/globals';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 export interface Product {
   id: string;
@@ -13,13 +13,14 @@ export interface Product {
 
 const useGetAllProducts = () => {
    const query = useQuery<Product[]>({
-    queryKey: ["products"],
+    placeholderData: keepPreviousData,
     queryFn: async (): Promise<Product[]> => {
       const response = await fetch(`${API_URL}/products`);
       const data = await response.json();
 
       return data as Product[];
     },
+    queryKey: ["products"],
     staleTime: ONE_MINUTE
   });
 
