@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect } from "react";
 import { useAuthStore } from "@/stores/useAuthStore";
 import useGetUserById from "@/services/useGetUserById";
