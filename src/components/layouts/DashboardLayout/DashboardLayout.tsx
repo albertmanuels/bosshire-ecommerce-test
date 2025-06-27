@@ -5,7 +5,7 @@ import { CssBaseline } from "@mui/material";
 import SidebarMenu from "./SidebarMenu";
 import Header from "./Header";
 import { useAuthStore } from "@/stores/useAuthStore";
-import DashboardIcon from "@mui/icons-material/Dashboard";
+import { sidebarItems } from "@/constants/navigation";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false);
@@ -18,15 +18,6 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
-  const sidebarItems = [
-    {
-      href: "/",
-      label: "Dashboard",
-      key: "dashboard",
-      icon: DashboardIcon,
-    },
-  ];
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -41,6 +32,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
       <Box
         component="main"
         sx={{
+          flexGrow: 1,
           height: "100%",
           minHeight: "100dvh",
           paddingTop: "5rem",

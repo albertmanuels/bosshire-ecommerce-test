@@ -14,7 +14,8 @@ import ListItemText from "@mui/material/ListItemText";
 import { AccountCircle, Logout } from "@mui/icons-material";
 import { logout } from "@/components/views/LoginPage/actions";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 
 type SidebarItem = {
   key: string;
@@ -51,7 +52,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
@@ -91,6 +91,7 @@ const SidebarMenu = (props: SidebarMenuProps) => {
   const { open, handleDrawerClose, username, sidebarItems } = props;
   const theme = useTheme();
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleLogout = async () => {
     try {
@@ -126,51 +127,59 @@ const SidebarMenu = (props: SidebarMenuProps) => {
       <List>
         {sidebarItems.map((item) => (
           <ListItem key={item.key} disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              sx={[
-                {
-                  minHeight: 48,
-                  px: 2.5,
-                },
-                open
-                  ? {
-                      justifyContent: "initial",
-                    }
-                  : {
-                      justifyContent: "center",
-                    },
-              ]}
-            >
-              <ListItemIcon
+            <Link href={item.href}>
+              <ListItemButton
                 sx={[
                   {
-                    minWidth: 0,
-                    justifyContent: "center",
+                    minHeight: 48,
+                    px: 2.5,
+                    backgroundColor:
+                      pathname === item.href ? "Highlight" : "transparent",
+                    ":hover": {
+                      backgroundColor:
+                        pathname === item.href ? "Highlight" : "",
+                    },
                   },
                   open
                     ? {
-                        mr: 3,
+                        justifyContent: "initial",
                       }
                     : {
-                        mr: "auto",
+                        justifyContent: "center",
                       },
                 ]}
               >
-                <item.icon />
-              </ListItemIcon>
-              <ListItemText
-                primary={item.label}
-                sx={[
-                  open
-                    ? {
-                        opacity: 1,
-                      }
-                    : {
-                        opacity: 0,
-                      },
-                ]}
-              />
-            </ListItemButton>
+                <ListItemIcon
+                  sx={[
+                    {
+                      minWidth: 0,
+                      justifyContent: "center",
+                    },
+                    open
+                      ? {
+                          mr: 3,
+                        }
+                      : {
+                          mr: "auto",
+                        },
+                  ]}
+                >
+                  <item.icon />
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.label}
+                  sx={[
+                    open
+                      ? {
+                          opacity: 1,
+                        }
+                      : {
+                          opacity: 0,
+                        },
+                  ]}
+                />
+              </ListItemButton>
+            </Link>
           </ListItem>
         ))}
       </List>

@@ -1,16 +1,17 @@
 import { ShoppingCart } from "@mui/icons-material"
-export const protectedRoutes = ["/cart"]
-export const authRoutes = ["/login"]
+import DashboardIcon from "@mui/icons-material/Dashboard";
 
-export const navItems = [
-   {
-    href: "/products",
-    label: "Products",
-    icon: null
+export const sidebarItems = [
+    {
+      href: "/",
+      label: "Dashboard",
+      key: "dashboard",
+      icon: DashboardIcon,
+    },
+    {
+      href: "/cart",
+      label: "Cart",
+      key: "cart",
+      icon: ShoppingCart,
   },
-  {
-    href: "/cart",
-    label: "Cart",
-    icon: ShoppingCart,
-  },
-]
+];
