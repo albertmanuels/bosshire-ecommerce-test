@@ -10,7 +10,7 @@ import {
   SvgIconOwnProps,
   SvgIconProps,
   SxProps,
-  Table,
+  Table as MuiTable,
   TableBody,
   TableCell,
   TableCellProps,
@@ -42,14 +42,14 @@ export interface TableHeader {
 
 export type TableData = Partial<Record<TableHeader["key"], any>>;
 
-type CartTableProps = {
+type TableProps = {
   tableData: TableData[];
   tableHeader: TableHeader[];
   itemsPerPage?: number;
   isLoading: boolean;
 };
 
-const CartTable = (props: CartTableProps) => {
+const Table = (props: TableProps) => {
   const {
     tableData,
     tableHeader,
@@ -109,7 +109,7 @@ const CartTable = (props: CartTableProps) => {
   }, [search, tableData]);
 
   const renderBody = (tableData: TableData[], tableHeader: TableHeader[]) => {
-    const slicedData = filteredProducts.slice(
+    const slicedData = tableData.slice(
       page * itemsPerPage,
       page * itemsPerPage + itemsPerPage
     );
@@ -187,7 +187,7 @@ const CartTable = (props: CartTableProps) => {
         />
       </Box>
       <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader>
+        <MuiTable stickyHeader>
           <TableHead>{renderHeader()}</TableHead>
           <TableBody>
             {isLoading ? (
@@ -196,7 +196,7 @@ const CartTable = (props: CartTableProps) => {
               <>{renderBody(filteredProducts, tableHeader)}</>
             )}
           </TableBody>
-        </Table>
+        </MuiTable>
       </TableContainer>
       <TablePagination
         rowsPerPageOptions={[5, 10, 15]}
@@ -211,4 +211,4 @@ const CartTable = (props: CartTableProps) => {
   );
 };
 
-export default CartTable;
+export default Table;

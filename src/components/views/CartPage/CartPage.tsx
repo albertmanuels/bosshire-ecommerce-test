@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import CartTable from "@/components/shared/CartTable";
-import { TableHeader } from "@/components/shared/CartTable/CartTable";
+import Table from "@/components/shared/Table";
+import { TableHeader } from "@/components/shared/Table/Table";
 import { Visibility } from "@mui/icons-material";
 import useGetAllCarts from "@/services/useGetAllCarts";
 
@@ -51,7 +51,7 @@ const CartPage = () => {
       <Typography variant="h4" fontWeight={500} marginBottom={3}>
         Shopping Cart
       </Typography>
-      <CartTable
+      <Table
         tableData={tableData}
         tableHeader={tableHeader}
         isLoading={isLoading}
