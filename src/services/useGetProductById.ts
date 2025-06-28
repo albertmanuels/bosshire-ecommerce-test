@@ -1,6 +1,7 @@
 import { API_URL } from '@/constants/config'
 import { useQuery } from '@tanstack/react-query'
 import { Product } from './useGetAllProducts'
+import { ONE_MINUTE } from '@/constants/globals';
 
 export interface ProductSingle extends Product {
   rating: {
@@ -17,6 +18,7 @@ const useGetProductById = ({id}: {id: number}) => {
 
       return data
     },
+    staleTime: ONE_MINUTE,
     queryKey: ["product", id]
   })
   return query

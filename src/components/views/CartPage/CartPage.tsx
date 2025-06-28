@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useCartStore } from "@/stores/useCartStore";
 import Image from "next/image";
-import { Delete, ShoppingCart } from "@mui/icons-material";
+import { Delete, ShoppingCart, Visibility } from "@mui/icons-material";
 import NumberStepper from "@/components/shared/NumberStepper";
 import usePostNewCart from "@/services/usePostNewCart";
 import { ADMIN } from "@/constants/user";
@@ -20,9 +20,15 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { getNextCartId } from "@/helpers/global";
 import Link from "next/link";
+import ProductDetailModal from "./components/ProductDetailModal";
 
 const CartPage = () => {
   const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [currentViewProductId, setCurrentViewProductId] = useState<
+    number | null
+  >(null);
+
   const { cart, updateQuantity, removeItemFromCart, allCarts, checkout } =
     useCartStore();
 
@@ -106,20 +112,30 @@ const CartPage = () => {
                           ${product.price.toFixed(2)}
                         </Typography>
 
-                        <Box display="flex" alignItems="center" gap={1}>
-                          <IconButton
-                            onClick={() => removeItemFromCart(product.id)}
-                          >
-                            <Delete fontSize="small" />
-                          </IconButton>
-                        </Box>
-
                         <NumberStepper
                           value={product.quantity}
                           onChange={(value) => {
                             updateQuantity(product.id, value);
                           }}
                         />
+
+                        <Box display="flex" alignItems="center" gap={1}>
+                          <IconButton
+                            color="primary"
+                            onClick={() => {
+                              setOpen(true);
+                              setCurrentViewProductId(product.id);
+                            }}
+                          >
+                            <Visibility fontSize="small" color="primary" />
+                          </IconButton>
+                          <IconButton
+                            color="error"
+                            onClick={() => removeItemFromCart(product.id)}
+                          >
+                            <Delete fontSize="small" color="error" />
+                          </IconButton>
+                        </Box>
                       </Box>
                     </Box>
                   ))}
@@ -161,6 +177,11 @@ const CartPage = () => {
             >
               Checkout
             </Button>
+            <ProductDetailModal
+              open={open}
+              setOpen={setOpen}
+              productId={currentViewProductId}
+            />
           </Card>
         </Grid>
       </Grid>
