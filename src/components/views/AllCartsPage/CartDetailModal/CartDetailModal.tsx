@@ -55,6 +55,9 @@ const CartDetailModal = (props: CartDetailModalProps) => {
     {
       key: "id",
       label: "Product ID",
+      sx: {
+        width: "30%",
+      },
     },
     {
       key: "title",
@@ -86,6 +89,7 @@ const CartDetailModal = (props: CartDetailModalProps) => {
       onClose={() => setOpen(false)}
       title="Cart Detail"
       fullWidth
+      maxWidth="md"
     >
       <DialogContent>
         <Table
@@ -95,7 +99,9 @@ const CartDetailModal = (props: CartDetailModalProps) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => setOpen(false)}>Close</Button>
+        <Button onClick={() => setOpen(false)} variant="contained">
+          Close
+        </Button>
       </DialogActions>
     </Modal>
   );

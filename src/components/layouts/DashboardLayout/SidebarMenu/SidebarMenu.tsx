@@ -95,9 +95,7 @@ const SidebarMenu = (props: SidebarMenuProps) => {
   const pathname = usePathname();
 
   const onLogout = useAuthStore((state) => state.logout);
-  const totalItemsInCart = useCartStore((state) =>
-    state.cart.reduce((sum, product) => sum + product.quantity, 0)
-  );
+  const totalItemsInCart = useCartStore((state) => state.cart.length);
 
   const handleLogout = async () => {
     try {

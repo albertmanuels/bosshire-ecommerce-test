@@ -24,13 +24,20 @@ const DashboardPage = () => {
 
   const tableHeader: TableHeader[] = [
     {
+      key: "index",
+      type: "index",
+      label: "No",
+      sx: {
+        width: "6%",
+      },
+    },
+    {
       key: "image",
       type: "image",
       label: "Image",
       sx: {
         width: "10%",
       },
-      align: "left",
     },
     {
       key: "id",
@@ -41,7 +48,7 @@ const DashboardPage = () => {
     },
     {
       key: "title",
-      label: "Title",
+      label: "Product Name",
       sx: {
         width: "30%",
       },
@@ -53,6 +60,9 @@ const DashboardPage = () => {
     {
       key: "price",
       label: "Price",
+      render: (row) => (
+        <Typography textAlign="center">${row?.price}</Typography>
+      ),
     },
     {
       key: "action",

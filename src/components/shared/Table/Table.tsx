@@ -37,7 +37,7 @@ type ActionOptions = (row?: TableData) => Action[] | Action[];
 export interface TableHeader {
   key: string;
   label: string;
-  type?: "action" | "image";
+  type?: "action" | "image" | "index";
   sx?: TableCellProps["sx"];
   actionOptions?: ActionOptions;
   align?: TableCellProps["align"];
@@ -58,6 +58,9 @@ type TableProps = {
   isLoading: boolean;
   withSearch?: boolean;
   buttons?: TopButton[];
+  searchOptions?: {
+    searchBy: "title";
+  };
 };
 
 const Table = (props: TableProps) => {
@@ -67,6 +70,7 @@ const Table = (props: TableProps) => {
     isLoading,
     withSearch = false,
     buttons = [],
+    searchOptions,
     itemsPerPage: _itemPerPage = 5,
   } = props;
   const [page, setPage] = useState(0);
@@ -111,16 +115,6 @@ const Table = (props: TableProps) => {
     );
   };
 
-  const filteredProducts = useMemo(() => {
-    if (!!search) {
-      return tableData.filter((data) =>
-        data.title.toLowerCase().includes(search.toLowerCase())
-      );
-    } else {
-      return tableData;
-    }
-  }, [search, tableData]);
-
   const renderBody = (tableData: TableData[], tableHeader: TableHeader[]) => {
     const slicedData = tableData.slice(
       page * itemsPerPage,
@@ -129,7 +123,7 @@ const Table = (props: TableProps) => {
 
     return (
       <>
-        {slicedData?.map((row) => (
+        {slicedData?.map((row, rowIndex) => (
           <TableRow key={row.id}>
             {tableHeader.map(({ align = "center", ...column }) => {
               const value = row[column.key];
@@ -143,16 +137,24 @@ const Table = (props: TableProps) => {
                   ? column.actionOptions(row)
                   : column.actionOptions;
 
+              if (column.type === "index") {
+                return (
+                  <TableCell key={column.key} align="center">
+                    {rowIndex + 1}
+                  </TableCell>
+                );
+              }
+
               if (column.type === "image") {
                 return (
-                  <TableCell key={column.key} align="left">
+                  <TableCell key={column.key}>
                     <Image
                       src={value}
                       alt={`image-${value}-${row.id}`}
                       width={60}
                       height={60}
                       priority
-                      style={{ objectFit: "contain" }}
+                      style={{ objectFit: "contain", margin: "auto" }}
                     />
                   </TableCell>
                 );
@@ -198,14 +200,27 @@ const Table = (props: TableProps) => {
   };
 
   const renderLoadingRow = (colSpan: number) => {
-    <TableRow>
-      <TableCell colSpan={colSpan}>
-        <Box display="flex" justifyContent="center" py={2}>
-          <CircularProgress size={24} />
-        </Box>
-      </TableCell>
-    </TableRow>;
+    return (
+      <TableRow>
+        <TableCell colSpan={colSpan}>
+          <Box display="flex" justifyContent="center" py={2}>
+            <CircularProgress size={30} />
+          </Box>
+        </TableCell>
+      </TableRow>
+    );
   };
+
+  const filteredProducts = useMemo(() => {
+    if (!!search) {
+      const filterKey = searchOptions?.searchBy ?? "title";
+      return tableData.filter((data) =>
+        data[filterKey]?.toLowerCase().includes(search.toLowerCase())
+      );
+    } else {
+      return tableData;
+    }
+  }, [search, searchOptions?.searchBy, tableData]);
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", padding: 4 }}>
@@ -220,7 +235,7 @@ const Table = (props: TableProps) => {
             <SearchBar
               value={search}
               onChange={setSearch}
-              placeholder="Search products by title"
+              placeholder="Search by product name"
             />
           </Box>
         )}

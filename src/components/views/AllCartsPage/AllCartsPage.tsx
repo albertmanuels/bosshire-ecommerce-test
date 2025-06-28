@@ -44,6 +44,14 @@ const AllCartsPage = () => {
 
   const tableHeader: TableHeader[] = [
     {
+      key: "index",
+      type: "index",
+      label: "No",
+      sx: {
+        width: "6%",
+      },
+    },
+    {
       key: "id",
       label: "Cart ID",
       sx: {
@@ -64,7 +72,7 @@ const AllCartsPage = () => {
     },
     {
       key: "createdAt",
-      label: "Created at",
+      label: "Created At",
       sx: {
         width: "10%",
       },
