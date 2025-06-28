@@ -1,4 +1,5 @@
  
+"use client"
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Cart } from "@/services/useGetAllCarts";
@@ -18,8 +19,6 @@ interface CartState {
   addToCart: (product: CartProduct) => void
   setToAllCarts: (Cart: Cart) => void;
   updateQuantity: (id: number, quantity: number) => void
-  getTotalItemsInCart: () => number
-  getTotalPriceInCart: () => number
   removeItemFromCart: (id: number) => void
 }
 
@@ -62,18 +61,6 @@ export const useCartStore = create<CartState>()(
           }
         }))
       })),
-      getTotalItemsInCart: () => {
-        const {cart} = get()
-        const total = cart.reduce((sum, product) => sum + product.quantity ,0)
-
-        return total
-      },
-      getTotalPriceInCart: () => {
-        const {cart} = get()
-        const totalPrice = cart.reduce((sum, product) => sum + product.price * product.quantity, 0)
-
-        return totalPrice
-      },
       removeItemFromCart: (id) => set({
         cart: get().cart.filter(item => item.id !== id)
       })

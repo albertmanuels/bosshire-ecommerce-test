@@ -12,38 +12,18 @@ import {
 } from "@mui/material";
 import { useCartStore } from "@/stores/useCartStore";
 import Image from "next/image";
-import { Delete, FavoriteBorder } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 import NumberStepper from "@/components/shared/NumberStepper";
-import usePostNewCart from "@/services/usePostNewCart";
-import { ADMIN } from "@/constants/user";
-import { toast } from "react-toastify";
 
 const CartPage = () => {
-  const {
-    cart,
-    getTotalPriceInCart,
-    updateQuantity,
-    removeItemFromCart,
-    setToAllCarts,
-  } = useCartStore();
+  const { cart, updateQuantity, removeItemFromCart } = useCartStore();
 
-  const totalPrice = getTotalPriceInCart().toFixed(2);
-  const cartId = Math.random() * 1000;
-
-  // const { mutate } = usePostNewCart({
-  //   onSuccess: (data) => {
-  //     console.log("data from success: ", data);
-  //     setToAllCarts({
-  //       date: new Date().toISOString(),
-  //       products: ,
-  //       id: cartId,
-  //       userId: ADMIN.id,
-  //     });
-  //   },
-  //   onError: (error) => {
-  //     toast.error(error);
-  //   },
-  // });
+  const totalPrice = useCartStore((state) =>
+    state.cart.reduce(
+      (sum, product) => sum + product.price * product.quantity,
+      0
+    )
+  ).toFixed(2);
 
   return (
     <Box>
@@ -129,13 +109,6 @@ const CartPage = () => {
               color="primary"
               sx={{ borderRadius: 3, py: 1.5, fontWeight: 600 }}
               disabled={cart.length === 0}
-              // onClick={() =>
-              //   mutate({
-              //     id: cartId,
-              //     products: cart,
-              //     userId: ADMIN.id,
-              //   })
-              // }
             >
               Buy
             </Button>

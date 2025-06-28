@@ -16,6 +16,7 @@ import { logout } from "@/components/views/LoginPage/actions";
 import { toast } from "react-toastify";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+import { useCartStore } from "@/stores/useCartStore";
 
 type SidebarItem = {
   key: string;
@@ -93,6 +94,10 @@ const SidebarMenu = (props: SidebarMenuProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
+  const totalItemsInCart = useCartStore((state) =>
+    state.cart.reduce((sum, product) => sum + product.quantity, 0)
+  );
+
   const handleLogout = async () => {
     try {
       const result = await logout();
@@ -165,7 +170,7 @@ const SidebarMenu = (props: SidebarMenuProps) => {
                   ]}
                 >
                   {item.key === "cart" ? (
-                    <Badge badgeContent={99} color="primary">
+                    <Badge badgeContent={totalItemsInCart} color="primary">
                       <item.icon />
                     </Badge>
                   ) : (
