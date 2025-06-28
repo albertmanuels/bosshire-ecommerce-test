@@ -1,19 +1,19 @@
 "use client";
 import Modal from "@/components/shared/Modal";
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Button,
   DialogActions,
   DialogContent,
   Typography,
 } from "@mui/material";
-import useGetCartById from "@/services/useGetCartById";
 import useGetProductDetailQueries from "@/services/useGetProductDetailQueries";
 import { Cart } from "@/services/useGetAllCarts";
 import Table from "@/components/shared/Table";
 import { Product } from "@/services/useGetAllProducts";
 import { TableHeader } from "@/components/shared/Table/Table";
 import { Visibility } from "@mui/icons-material";
+import { useCartStore } from "@/stores/useCartStore";
 
 type CartDetailModalProps = {
   open: boolean;
@@ -23,16 +23,15 @@ type CartDetailModalProps = {
 
 const CartDetailModal = (props: CartDetailModalProps) => {
   const { open, setOpen, id } = props;
+  const { allCarts } = useCartStore();
 
-  const { data: cartDetailData, isLoading: isCartLoading } = useGetCartById(
-    { id },
-    {
-      enabled: open && !!id,
-    }
+  const cartDetail = useMemo(
+    () => allCarts.find((cart) => cart.id === id),
+    [allCarts, id]
   );
 
   const productDetailsQueries = useGetProductDetailQueries({
-    cart: cartDetailData as Cart,
+    cart: cartDetail as Cart,
   });
 
   const products = productDetailsQueries.map((item) => {
@@ -41,7 +40,7 @@ const CartDetailModal = (props: CartDetailModalProps) => {
   });
 
   const isLoadingProduct = productDetailsQueries.some((prod) => prod.isLoading);
-  const isLoading = isCartLoading || isLoadingProduct;
+  const isLoading = isLoadingProduct;
 
   const tableHeader: TableHeader[] = [
     {
