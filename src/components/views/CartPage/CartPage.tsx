@@ -18,6 +18,7 @@ import usePostNewCart from "@/services/usePostNewCart";
 import { ADMIN } from "@/constants/user";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { getNextCartId } from "@/helpers/global";
 
 const CartPage = () => {
   const router = useRouter();
@@ -33,7 +34,10 @@ const CartPage = () => {
 
   const { mutate, isPending } = usePostNewCart({
     onSuccess: (data) => {
-      checkout(data);
+      checkout({
+        ...data,
+        id: getNextCartId(allCarts),
+      });
       toast.success("Checkout is successfully!");
       router.push("/");
     },
@@ -44,9 +48,8 @@ const CartPage = () => {
   });
 
   const handleOnCheckout = () => {
-    const currentMaxCardId = Math.max(...allCarts.map((cart) => cart.id));
     mutate({
-      id: currentMaxCardId + 1,
+      id: getNextCartId(allCarts),
       userId: ADMIN.id,
       date: new Date().toISOString(),
       products: cart.map((product) => ({
