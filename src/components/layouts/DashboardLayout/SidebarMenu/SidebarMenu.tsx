@@ -12,11 +12,11 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { AccountCircle, Logout } from "@mui/icons-material";
-import { logout } from "@/components/views/LoginPage/actions";
 import { toast } from "react-toastify";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useCartStore } from "@/stores/useCartStore";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 type SidebarItem = {
   key: string;
@@ -94,19 +94,24 @@ const SidebarMenu = (props: SidebarMenuProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
+  const onLogout = useAuthStore((state) => state.logout);
   const totalItemsInCart = useCartStore((state) =>
     state.cart.reduce((sum, product) => sum + product.quantity, 0)
   );
 
   const handleLogout = async () => {
     try {
-      const result = await logout();
+      const response = await fetch("/api/logout", {
+        method: "POST",
+      });
+      const result = await response.json();
 
       if (result.success) {
-        toast.success("Logout success!");
+        toast.success("Logout successful!");
+        onLogout();
         router.push("/login");
       } else {
-        throw new Error(String(result.error));
+        throw new Error(result.error);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -243,7 +248,7 @@ const SidebarMenu = (props: SidebarMenuProps) => {
             />
           </ListItemButton>
           <ListItemButton
-            onClick={logout}
+            onClick={handleLogout}
             sx={[
               {
                 minHeight: 48,

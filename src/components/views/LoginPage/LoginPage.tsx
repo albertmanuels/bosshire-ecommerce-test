@@ -53,11 +53,8 @@ const LoginPage = () => {
       return;
     }
 
-    toast.success("Login success!");
-
-    setTimeout(() => {
-      router.push("/");
-    }, 1000);
+    toast.success("Login successful!");
+    router.push("/");
   };
 
   return (

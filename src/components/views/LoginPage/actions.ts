@@ -1,7 +1,7 @@
 "use server"
 import { API_URL } from "@/constants/config"
 import { ADMIN } from "@/constants/user"
-import { createSession, deleteSession } from "@/utils/session"
+import { createSession } from "@/utils/session"
 import * as yup from "yup";
 
 const LoginSchema = yup.object().shape({
@@ -61,21 +61,5 @@ export async function loginActions(_: unknown, formData: FormData) {
     }
 
     throw error;
-  }
-}
-
-export async function logout() {
-  try {
-    await deleteSession();
-
-    return {
-      success: true,
-      error: null
-    }
-  } catch (error) {
-    return {
-      success: false,
-      error: error
-    }
   }
 }
