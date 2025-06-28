@@ -97,7 +97,12 @@ const CartPage = () => {
                       borderRadius={2}
                       border="1px solid #eee"
                     >
-                      <Box display="flex" alignItems="center" gap={2}>
+                      <Stack
+                        direction={{ xs: "column", lg: "row" }}
+                        gap={2}
+                        alignItems={{ xs: "revert", lg: "center" }}
+                        justifyContent={{ xs: "center", lg: "revert" }}
+                      >
                         <Image
                           src={product.image}
                           alt={product.title}
@@ -140,7 +145,7 @@ const CartPage = () => {
                             <Delete fontSize="small" color="error" />
                           </IconButton>
                         </Box>
-                      </Box>
+                      </Stack>
                     </Box>
                   ))}
                 </>
