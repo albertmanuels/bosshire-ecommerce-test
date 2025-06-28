@@ -111,8 +111,6 @@ const Table = (props: TableProps) => {
     );
   };
 
-  console.log(tableData);
-
   const filteredProducts = useMemo(() => {
     if (!!search) {
       return tableData.filter((data) =>

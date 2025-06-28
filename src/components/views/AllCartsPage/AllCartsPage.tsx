@@ -10,7 +10,7 @@ import CartDetailModal from "./CartDetailModal";
 import { useCartStore } from "@/stores/useCartStore";
 
 const AllCartsPage = () => {
-  const { allCarts, setAllCarts } = useCartStore();
+  const { allCarts, setToAllCarts } = useCartStore();
 
   const { data: carts, isLoading, isSuccess } = useGetAllCarts();
   const [open, setOpen] = React.useState(false);
@@ -18,9 +18,11 @@ const AllCartsPage = () => {
 
   useEffect(() => {
     if (allCarts.length == 0 && isSuccess) {
-      setAllCarts(carts);
+      carts.map((cart) => {
+        setToAllCarts(cart);
+      });
     }
-  }, [allCarts.length, carts, isSuccess, setAllCarts]);
+  }, [allCarts.length, carts, isSuccess, setToAllCarts]);
 
   const tableData = allCarts
     ? allCarts.map((cart) => ({

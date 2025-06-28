@@ -6,8 +6,10 @@ import useGetAllProducts from "@/services/useGetAllProducts";
 import { Visibility, AddShoppingCart } from "@mui/icons-material";
 import Table from "../shared/Table";
 import { TableHeader } from "../shared/Table/Table";
+import { useCartStore } from "@/stores/useCartStore";
 
 const DashboardPage = () => {
+  const { addToCart } = useCartStore();
   const { data: products, isLoading } = useGetAllProducts();
 
   const tableData =
@@ -64,7 +66,15 @@ const DashboardPage = () => {
         },
         {
           icon: AddShoppingCart,
-          onClick: () => {},
+          onClick: (row) => {
+            addToCart({
+              id: row?.id,
+              image: row?.image,
+              price: row?.price,
+              quantity: 1,
+              title: row?.title,
+            });
+          },
           color: "success",
         },
       ],
