@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import Table from "@/components/shared/Table";
 import { TableHeader } from "@/components/shared/Table/Table";
-import { FormatListBulleted, AddBox } from "@mui/icons-material";
+import { FormatListBulleted } from "@mui/icons-material";
 import useGetAllCarts from "@/services/useGetAllCarts";
 import { formatDateToLong } from "@/utils/date";
 import CartDetailModal from "./CartDetailModal";
@@ -37,6 +37,10 @@ const AllCartsPage = () => {
         createdAt: formatDateToLong(cart.date),
       }))
     : [];
+
+  const descOrderTableData = tableData.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
 
   const tableHeader: TableHeader[] = [
     {
@@ -91,19 +95,10 @@ const AllCartsPage = () => {
         All User Carts
       </Typography>
       <Table
-        tableData={tableData}
+        tableData={descOrderTableData}
         tableHeader={tableHeader}
         isLoading={isLoading}
         withSearch={true}
-        buttons={[
-          {
-            label: "Add a new cart",
-            onClick: () => {},
-            color: "primary",
-            variant: "contained",
-            startIcon: <AddBox />,
-          },
-        ]}
       />
       <CartDetailModal
         open={open}

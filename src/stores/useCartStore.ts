@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Cart } from "@/services/useGetAllCarts";
 
-export type CartProduct =  Cart & {
+export type CartProduct =  {
   id: number;
   title: string;
   price: number;
@@ -20,6 +20,7 @@ interface CartState {
   setToAllCarts: (Cart: Cart) => void;
   updateQuantity: (id: number, quantity: number) => void
   removeItemFromCart: (id: number) => void
+  checkout: (cart: Cart) => void 
 }
 
 export const useCartStore = create<CartState>()(
@@ -63,7 +64,13 @@ export const useCartStore = create<CartState>()(
       })),
       removeItemFromCart: (id) => set({
         cart: get().cart.filter(item => item.id !== id)
-      })
+      }),
+      checkout: (cart) => {
+        get().setToAllCarts(cart)
+        set(({
+          cart: []
+        }))
+      }
     }),
     {
       name: "cart-storage",

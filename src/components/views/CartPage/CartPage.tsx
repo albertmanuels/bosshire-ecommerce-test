@@ -14,9 +14,15 @@ import { useCartStore } from "@/stores/useCartStore";
 import Image from "next/image";
 import { Delete } from "@mui/icons-material";
 import NumberStepper from "@/components/shared/NumberStepper";
+import usePostNewCart from "@/services/usePostNewCart";
+import { ADMIN } from "@/constants/user";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const CartPage = () => {
-  const { cart, updateQuantity, removeItemFromCart } = useCartStore();
+  const router = useRouter();
+  const { cart, updateQuantity, removeItemFromCart, allCarts, checkout } =
+    useCartStore();
 
   const totalPrice = useCartStore((state) =>
     state.cart.reduce(
@@ -24,6 +30,31 @@ const CartPage = () => {
       0
     )
   ).toFixed(2);
+
+  const { mutate, isPending } = usePostNewCart({
+    onSuccess: (data) => {
+      checkout(data);
+      toast.success("Checkout is successfully!");
+      router.push("/");
+    },
+    onError: (error) => {
+      toast.error("Checkout failed!");
+      console.error(error);
+    },
+  });
+
+  const handleOnCheckout = () => {
+    const currentMaxCardId = Math.max(...allCarts.map((cart) => cart.id));
+    mutate({
+      id: currentMaxCardId + 1,
+      userId: ADMIN.id,
+      date: new Date().toISOString(),
+      products: cart.map((product) => ({
+        productId: product.id,
+        quantity: product.quantity,
+      })),
+    });
+  };
 
   return (
     <Box>
@@ -109,8 +140,10 @@ const CartPage = () => {
               color="primary"
               sx={{ borderRadius: 3, py: 1.5, fontWeight: 600 }}
               disabled={cart.length === 0}
+              onClick={handleOnCheckout}
+              loading={isPending}
             >
-              Buy
+              Checkout
             </Button>
           </Card>
         </Grid>
