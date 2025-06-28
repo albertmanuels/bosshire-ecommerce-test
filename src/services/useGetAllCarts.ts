@@ -1,16 +1,7 @@
 import { API_URL } from '@/constants/config'
 import { ONE_MINUTE } from '@/constants/globals'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-
-export interface Cart {
-  id: number;
-  userId: number;
-  date: string;
-  products: Array<{
-    productId: number,
-    quantity: number
-  }>
-}
+import { Cart } from '@/types/cart';
 
 const useGetAllCarts = () => {
   const query = useQuery<Cart[]>({

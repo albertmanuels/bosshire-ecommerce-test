@@ -1,14 +1,13 @@
 "use client";
-import Modal from "@/components/shared/Modal";
-import { ModalProps } from "@/components/shared/Modal/Modal";
 import useGetProductById from "@/services/useGetProductById";
-import { Star } from "@mui/icons-material";
+import { Close, Star } from "@mui/icons-material";
 import {
   Box,
-  Button,
   Chip,
-  DialogActions,
+  Dialog,
   DialogContent,
+  DialogTitle,
+  IconButton,
   Skeleton,
   Stack,
   Typography,
@@ -16,26 +15,28 @@ import {
 import Image from "next/image";
 import React from "react";
 
-type ProductDetailModalProps = ModalProps & {
-  setOpen: (val: boolean) => void;
+type ProductDetailModalProps = {
+  onClose: () => void;
   productId: number | null;
+  open: boolean;
 };
 
 const ProductDetailModal = (props: ProductDetailModalProps) => {
-  const { open, setOpen, productId, ...delegated } = props;
+  const { open, onClose, productId } = props;
 
   const { data, isLoading } = useGetProductById({ id: productId as number });
 
   return (
-    <Modal
-      open={open}
-      onClose={() => setOpen(false)}
-      title=""
-      fullWidth
-      maxWidth="md"
-      {...delegated}
-    >
-      <DialogContent>
+    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+      <DialogTitle>
+        <IconButton
+          onClick={onClose}
+          sx={{ position: "absolute", top: 8, right: 8 }}
+        >
+          <Close />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent sx={{ paddingBottom: 4 }}>
         {isLoading ? (
           <>
             <Skeleton variant="text" width="60%" height={40} sx={{ mb: 2 }} />
@@ -97,12 +98,7 @@ const ProductDetailModal = (props: ProductDetailModalProps) => {
           </>
         )}
       </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setOpen(false)} variant="contained">
-          Close
-        </Button>
-      </DialogActions>
-    </Modal>
+    </Dialog>
   );
 };
 

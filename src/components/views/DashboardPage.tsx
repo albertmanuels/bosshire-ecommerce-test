@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import useGetAllProducts from "@/services/useGetAllProducts";
@@ -7,10 +7,14 @@ import { Visibility, AddShoppingCart } from "@mui/icons-material";
 import Table from "../shared/Table";
 import { TableHeader } from "../shared/Table/Table";
 import { useCartStore } from "@/stores/useCartStore";
+import { Chip } from "@mui/material";
+import ProductDetailModal from "../shared/_features/ProductDetailModal";
 
 const DashboardPage = () => {
   const { addToCart } = useCartStore();
   const { data: products, isLoading } = useGetAllProducts();
+  const [open, setOpen] = useState(false);
+  const [currentViewProductId, setCurrentViewProductId] = useState(null);
 
   const tableData =
     products?.map((product) => ({
@@ -56,6 +60,15 @@ const DashboardPage = () => {
     {
       key: "category",
       label: "Category",
+      render: (row) => (
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Chip
+            label={row?.category}
+            variant="filled"
+            sx={{ width: "fit-content", margin: "auto" }}
+          />
+        </Box>
+      ),
     },
     {
       key: "price",
@@ -71,7 +84,10 @@ const DashboardPage = () => {
       actionOptions: () => [
         {
           icon: Visibility,
-          onClick: () => {},
+          onClick: (row) => {
+            setOpen(true);
+            setCurrentViewProductId(row?.id);
+          },
           color: "primary",
         },
         {
@@ -83,6 +99,9 @@ const DashboardPage = () => {
               price: row?.price,
               quantity: 1,
               title: row?.title,
+              description: row?.description,
+              rating: row?.rating,
+              category: row?.category,
             });
           },
           color: "success",
@@ -105,6 +124,12 @@ const DashboardPage = () => {
         withSearch={true}
         isLoading={isLoading}
         itemsPerPage={5}
+      />
+
+      <ProductDetailModal
+        open={open}
+        onClose={() => setOpen(false)}
+        productId={currentViewProductId}
       />
     </Box>
   );

@@ -1,72 +1,68 @@
 "use client";
-import Modal from "@/components/shared/Modal";
-import React, { useMemo } from "react";
+import React from "react";
 import {
-  Button,
-  DialogActions,
+  Dialog,
   DialogContent,
+  DialogTitle,
+  Divider,
+  IconButton,
   Typography,
 } from "@mui/material";
-import useGetProductDetailQueries from "@/services/useGetProductDetailQueries";
-import { Cart } from "@/services/useGetAllCarts";
 import Table from "@/components/shared/Table";
-import { Product } from "@/services/useGetAllProducts";
 import { TableHeader } from "@/components/shared/Table/Table";
-import { Visibility } from "@mui/icons-material";
+import { Close, Visibility } from "@mui/icons-material";
 import { useCartStore } from "@/stores/useCartStore";
 
 type CartDetailModalProps = {
   open: boolean;
-  setOpen: (val: boolean) => void;
+  onClose: () => void;
   id: number | null;
 };
 
 const CartDetailModal = (props: CartDetailModalProps) => {
-  const { open, setOpen, id } = props;
-  const { allCarts } = useCartStore();
+  const { open, onClose, id } = props;
+  const { getCartDetailById } = useCartStore();
 
-  const cartDetail = useMemo(
-    () => allCarts.find((cart) => cart.id === id),
-    [allCarts, id]
-  );
-
-  const productDetailsQueries = useGetProductDetailQueries({
-    cart: cartDetail as Cart,
-  });
-
-  const products = productDetailsQueries.map((item) => {
-    const res = item.data as Product;
-    return res;
-  });
-
-  const isLoadingProduct = productDetailsQueries.some((prod) => prod.isLoading);
-  const isLoading = isLoadingProduct;
+  const cartDetail = getCartDetailById(id as number);
 
   const tableHeader: TableHeader[] = [
+    {
+      key: "index",
+      type: "index",
+      label: "No",
+      sx: {
+        width: "4%",
+      },
+    },
     {
       key: "image",
       type: "image",
       label: "Image",
-      align: "left",
       sx: {
-        width: "10%",
+        width: "20%",
       },
     },
     {
       key: "id",
       label: "Product ID",
       sx: {
-        width: "30%",
+        width: "15%",
       },
     },
     {
       key: "title",
       label: "Title",
+      sx: {
+        maxWidth: "40%",
+      },
     },
     {
       key: "price",
       label: "Price",
       render: (row) => <Typography>${row?.price}</Typography>,
+      sx: {
+        width: "10%",
+      },
     },
     {
       key: "action",
@@ -84,26 +80,32 @@ const CartDetailModal = (props: CartDetailModalProps) => {
   ];
 
   return (
-    <Modal
-      open={open}
-      onClose={() => setOpen(false)}
-      title="Cart Detail"
-      fullWidth
-      maxWidth="md"
-    >
-      <DialogContent>
+    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+      <DialogTitle>
+        Cart Detail - ID #{cartDetail?.id}
+        <IconButton
+          onClick={onClose}
+          sx={{ position: "absolute", top: 8, right: 8 }}
+        >
+          <Close />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent sx={{ paddingBottom: 4 }}>
+        <Typography variant="subtitle2" gutterBottom>
+          User ID: {cartDetail.userId}
+        </Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          Date: {new Date(cartDetail.date).toLocaleDateString()}
+        </Typography>
+
+        <Divider sx={{ my: 2 }} />
         <Table
-          tableData={products}
-          isLoading={isLoading}
+          tableData={cartDetail?.products}
+          isLoading={false}
           tableHeader={tableHeader}
         />
       </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setOpen(false)} variant="contained">
-          Close
-        </Button>
-      </DialogActions>
-    </Modal>
+    </Dialog>
   );
 };
 

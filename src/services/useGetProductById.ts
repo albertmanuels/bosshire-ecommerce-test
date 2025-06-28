@@ -1,18 +1,12 @@
 import { API_URL } from '@/constants/config'
 import { useQuery } from '@tanstack/react-query'
-import { Product } from './useGetAllProducts'
 import { ONE_MINUTE } from '@/constants/globals';
-
-export interface ProductSingle extends Product {
-  rating: {
-    rate: number;
-    count: number
-  }
-}
+import { DeepRequired } from '@/types/utils';
+import { Product } from '@/types/product';
 
 const useGetProductById = ({id}: {id: number}) => {
-  const query =  useQuery<ProductSingle>({
-    queryFn: async (): Promise<ProductSingle> => {
+  const query =  useQuery<DeepRequired<Product>>({
+    queryFn: async (): Promise<DeepRequired<Product>> => {
       const res = await fetch(`${API_URL}/products/${id}`)
       const data = await res.json()
 

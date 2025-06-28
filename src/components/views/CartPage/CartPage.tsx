@@ -20,7 +20,8 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { getNextCartId } from "@/helpers/global";
 import Link from "next/link";
-import ProductDetailModal from "./components/ProductDetailModal";
+import getEnrichedCart from "@/helpers/getEnrichedCarts";
+import ProductDetailModal from "@/components/shared/_features/ProductDetailModal";
 
 const CartPage = () => {
   const router = useRouter();
@@ -34,17 +35,20 @@ const CartPage = () => {
 
   const totalPrice = useCartStore((state) =>
     state.cart.reduce(
-      (sum, product) => sum + product.price * product.quantity,
+      (sum, product) => sum + (product?.price ?? 0) * (product.quantity ?? 0),
       0
     )
   ).toFixed(2);
 
   const { mutate, isPending } = usePostNewCart({
     onSuccess: (data) => {
-      checkout({
+      const payload = {
         ...data,
         id: getNextCartId(allCarts),
-      });
+      };
+
+      const enriched = getEnrichedCart(payload, cart);
+      checkout(enriched);
       toast.success("Checkout is successful!");
       router.push("/");
     },
@@ -179,7 +183,7 @@ const CartPage = () => {
             </Button>
             <ProductDetailModal
               open={open}
-              setOpen={setOpen}
+              onClose={() => setOpen(false)}
               productId={currentViewProductId}
             />
           </Card>

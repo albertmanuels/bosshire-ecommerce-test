@@ -1,26 +1,19 @@
  
 "use client"
+import { EnrichedCart } from "@/types/cart";
+import { CartProduct } from "@/types/product";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Cart } from "@/services/useGetAllCarts";
-
-export type CartProduct =  {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-  quantity: number;
-  description?: string; 
-};
 
 interface CartState {
-  allCarts: Cart[];
+  allCarts: EnrichedCart[];
   cart: CartProduct[]
   addToCart: (product: CartProduct) => void
-  setToAllCarts: (Cart: Cart) => void;
+  setToAllCarts: (Cart: EnrichedCart) => void;
   updateQuantity: (id: number, quantity: number) => void
   removeItemFromCart: (id: number) => void
-  checkout: (cart: Cart) => void 
+  checkout: (cart: EnrichedCart) => void
+  getCartDetailById: (cartId: number) => EnrichedCart
 }
 
 export const useCartStore = create<CartState>()(
@@ -50,6 +43,12 @@ export const useCartStore = create<CartState>()(
         }
       },
       setToAllCarts: (cart) => set((state) => ({ allCarts: [...state.allCarts, cart] })),
+      getCartDetailById: (cartId) => {
+        const carts = get().allCarts
+        const selectedCart = carts.find(cart => cart.id === cartId) as EnrichedCart
+
+        return selectedCart
+      },
       updateQuantity: (id, quantity) => set(({
         cart: get().cart.map((item => {
           if(item.id === id) {

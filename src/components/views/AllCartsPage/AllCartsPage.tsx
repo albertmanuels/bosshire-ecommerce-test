@@ -8,21 +8,27 @@ import useGetAllCarts from "@/services/useGetAllCarts";
 import { formatDateToLong } from "@/utils/date";
 import CartDetailModal from "./CartDetailModal";
 import { useCartStore } from "@/stores/useCartStore";
+import useGetAllProducts from "@/services/useGetAllProducts";
+import { Product } from "@/types/product";
+import getEnrichedCart from "@/helpers/getEnrichedCarts";
 
 const AllCartsPage = () => {
   const { allCarts, setToAllCarts } = useCartStore();
 
-  const { data: carts, isLoading, isSuccess } = useGetAllCarts();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [currentViewCartId, setCurrentViewCartId] = useState(null);
+
+  const { data: carts, isLoading, isSuccess } = useGetAllCarts();
+  const { data: products } = useGetAllProducts();
 
   useEffect(() => {
     if (allCarts.length == 0 && isSuccess) {
-      carts.map((cart) => {
-        setToAllCarts(cart);
+      carts?.map((cart) => {
+        const enriched = getEnrichedCart(cart, products as Product[]);
+        setToAllCarts(enriched);
       });
     }
-  }, [allCarts.length, carts, isSuccess, setToAllCarts]);
+  }, [allCarts.length, carts, isSuccess, products, setToAllCarts]);
 
   const tableData = allCarts
     ? allCarts.map((cart) => ({
@@ -41,6 +47,8 @@ const AllCartsPage = () => {
   const descOrderTableData = tableData.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
+
+  console.log("ALL CARTS: ", allCarts);
 
   const tableHeader: TableHeader[] = [
     {
@@ -106,13 +114,15 @@ const AllCartsPage = () => {
         tableData={descOrderTableData}
         tableHeader={tableHeader}
         isLoading={isLoading}
-        withSearch={true}
+        withSearch
       />
-      <CartDetailModal
-        open={open}
-        setOpen={() => setOpen(false)}
-        id={currentViewCartId}
-      />
+      {open && (
+        <CartDetailModal
+          open={open}
+          onClose={() => setOpen(false)}
+          id={currentViewCartId}
+        />
+      )}
     </Box>
   );
 };
