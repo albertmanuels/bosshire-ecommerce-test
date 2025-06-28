@@ -12,13 +12,14 @@ import {
 } from "@mui/material";
 import { useCartStore } from "@/stores/useCartStore";
 import Image from "next/image";
-import { Delete } from "@mui/icons-material";
+import { Delete, ShoppingCart } from "@mui/icons-material";
 import NumberStepper from "@/components/shared/NumberStepper";
 import usePostNewCart from "@/services/usePostNewCart";
 import { ADMIN } from "@/constants/user";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { getNextCartId } from "@/helpers/global";
+import Link from "next/link";
 
 const CartPage = () => {
   const router = useRouter();
@@ -38,7 +39,7 @@ const CartPage = () => {
         ...data,
         id: getNextCartId(allCarts),
       });
-      toast.success("Checkout is successfully!");
+      toast.success("Checkout is successful!");
       router.push("/");
     },
     onError: (error) => {
@@ -68,50 +69,62 @@ const CartPage = () => {
         <Grid size={{ xs: 12, md: 8 }}>
           <Card variant="outlined" sx={{ padding: 2, borderRadius: 3 }}>
             <Stack gap={2}>
-              {cart.map((product) => (
-                <Box
-                  key={product.id}
-                  p={2}
-                  mb={2}
-                  borderRadius={2}
-                  border="1px solid #eee"
-                >
-                  <Box display="flex" alignItems="center" gap={2}>
-                    <Image
-                      src={product.image}
-                      alt={product.title}
-                      width={70}
-                      height={70}
-                      style={{ borderRadius: 8 }}
-                    />
-
-                    <Box flex={1}>
-                      <Typography fontWeight="medium">
-                        {product.title}
-                      </Typography>
-                    </Box>
-
-                    <Typography fontWeight="bold" sx={{ minWidth: 90 }}>
-                      ${product.price.toFixed(2)}
-                    </Typography>
-
-                    <Box display="flex" alignItems="center" gap={1}>
-                      <IconButton
-                        onClick={() => removeItemFromCart(product.id)}
-                      >
-                        <Delete fontSize="small" />
-                      </IconButton>
-                    </Box>
-
-                    <NumberStepper
-                      value={product.quantity}
-                      onChange={(value) => {
-                        updateQuantity(product.id, value);
-                      }}
-                    />
-                  </Box>
+              {cart.length === 0 ? (
+                <Box textAlign="center">
+                  <ShoppingCart sx={{ width: "3rem", height: "3rem" }} />
+                  <Typography>Cart is empty</Typography>
+                  <Link href="/">
+                    <Button variant="contained">Continue Shopping</Button>
+                  </Link>
                 </Box>
-              ))}
+              ) : (
+                <>
+                  {cart.map((product) => (
+                    <Box
+                      key={product.id}
+                      p={2}
+                      mb={2}
+                      borderRadius={2}
+                      border="1px solid #eee"
+                    >
+                      <Box display="flex" alignItems="center" gap={2}>
+                        <Image
+                          src={product.image}
+                          alt={product.title}
+                          width={70}
+                          height={70}
+                          style={{ borderRadius: 8 }}
+                        />
+
+                        <Box flex={1}>
+                          <Typography fontWeight="medium">
+                            {product.title}
+                          </Typography>
+                        </Box>
+
+                        <Typography fontWeight="bold" sx={{ minWidth: 90 }}>
+                          ${product.price.toFixed(2)}
+                        </Typography>
+
+                        <Box display="flex" alignItems="center" gap={1}>
+                          <IconButton
+                            onClick={() => removeItemFromCart(product.id)}
+                          >
+                            <Delete fontSize="small" />
+                          </IconButton>
+                        </Box>
+
+                        <NumberStepper
+                          value={product.quantity}
+                          onChange={(value) => {
+                            updateQuantity(product.id, value);
+                          }}
+                        />
+                      </Box>
+                    </Box>
+                  ))}
+                </>
+              )}
             </Stack>
           </Card>
         </Grid>
@@ -140,7 +153,7 @@ const CartPage = () => {
               fullWidth
               size="large"
               variant="contained"
-              color="primary"
+              color="success"
               sx={{ borderRadius: 3, py: 1.5, fontWeight: 600 }}
               disabled={cart.length === 0}
               onClick={handleOnCheckout}
