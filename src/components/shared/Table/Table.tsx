@@ -24,6 +24,7 @@ import {
 } from "@mui/material";
 import SearchBar from "../SearchBar";
 import Image from "next/image";
+import { deepSearchByKey } from "@/helpers/global";
 
 type Action = {
   onClick: (row?: TableData) => void;
@@ -67,10 +68,12 @@ const Table = (props: TableProps) => {
   const {
     tableData,
     tableHeader,
-    isLoading,
+    isLoading = false,
     withSearch = false,
     buttons = [],
-    searchOptions,
+    searchOptions = {
+      searchBy: "title",
+    },
     itemsPerPage: _itemPerPage = 5,
   } = props;
   const [page, setPage] = useState(0);
@@ -213,14 +216,13 @@ const Table = (props: TableProps) => {
 
   const filteredProducts = useMemo(() => {
     if (!!search) {
-      const filterKey = searchOptions?.searchBy ?? "title";
       return tableData.filter((data) =>
-        data[filterKey]?.toLowerCase().includes(search.toLowerCase())
+        deepSearchByKey(data, searchOptions?.searchBy, search)
       );
     } else {
       return tableData;
     }
-  }, [search, searchOptions?.searchBy, tableData]);
+  }, [search, tableData]);
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", padding: 4 }}>
