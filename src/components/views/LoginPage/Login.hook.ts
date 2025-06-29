@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { FormValues } from "./Login.types";
+import { pathname } from "@/constants/navigation";
 
 const LoginSchema = yup.object().shape({
   username: yup
@@ -63,7 +64,7 @@ const useLogin = () => {
     }
 
     toast.success("Login successful!");
-    router.push("/");
+    router.push(pathname.DASHBOARD);
   };
 
   return {

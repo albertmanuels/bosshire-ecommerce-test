@@ -16,6 +16,7 @@ import NumberStepper from "@/components/shared/NumberStepper";
 import Link from "next/link";
 import ProductDetailModal from "@/components/shared/_features/ProductDetailModal";
 import useCart from "./Cart.hook";
+import { pathname } from "@/constants/navigation";
 
 const CartPage = () => {
   const {
@@ -44,7 +45,7 @@ const CartPage = () => {
                 <Box textAlign="center">
                   <ShoppingCart sx={{ width: "3rem", height: "3rem" }} />
                   <Typography>Cart is empty</Typography>
-                  <Link href="/">
+                  <Link href={pathname.DASHBOARD}>
                     <Button variant="contained">Continue Shopping</Button>
                   </Link>
                 </Box>

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { getNextCartId } from "@/helpers/global";
 import getEnrichedCart from "@/helpers/getEnrichedCarts";
+import { pathname } from "@/constants/navigation";
 
 const useCart = () => {
   const router = useRouter();
@@ -35,7 +36,7 @@ const useCart = () => {
       const enriched = getEnrichedCart(payload, cart);
       checkout(enriched);
       toast.success("Checkout is successful!");
-      router.push("/");
+      router.push(pathname.DASHBOARD);
     },
     onError: (error) => {
       toast.error("Checkout failed!");
