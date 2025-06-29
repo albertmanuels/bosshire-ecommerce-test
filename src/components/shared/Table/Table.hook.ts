@@ -4,16 +4,6 @@ import { TableProps } from "./Table.types";
 
 import { deepSearchByKey } from "@/helpers/global";
 
-
-
-
-
-
-
-
-
-
-
 const useTable = (props: TableProps) => {
   const {
     tableData,
@@ -24,7 +14,7 @@ const useTable = (props: TableProps) => {
   const [page, setPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(_itemPerPage);
   const [search, setSearch] = useState("");
-
+  
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };

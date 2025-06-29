@@ -94,7 +94,7 @@ const Table = (props: TableProps) => {
               if (column.type === "index") {
                 return (
                   <TableCell key={column.key} align="center">
-                    {rowIndex + 1}
+                    {page * itemsPerPage + rowIndex + 1}
                   </TableCell>
                 );
               }
