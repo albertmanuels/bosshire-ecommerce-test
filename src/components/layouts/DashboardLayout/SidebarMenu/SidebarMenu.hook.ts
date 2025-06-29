@@ -1,11 +1,11 @@
 import { CSSObject } from "@emotion/styled";
-import { drawerWidth } from "./SidebarMenu.constants";
 import { styled, Theme } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { useCartStore } from "@/stores/useCartStore";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { drawerWidth } from "../DashboardLayout.constants";
 
 const useSidebarMenu = () => {
   const router = useRouter();

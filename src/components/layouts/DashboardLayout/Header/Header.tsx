@@ -1,15 +1,13 @@
+"use client";
 import React from "react";
 import { styled } from "@mui/material/styles";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-const drawerWidth = 240;
-
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
+import { AppBarProps, HeaderProps } from "./Header.types";
+import { drawerWidth } from "../DashboardLayout.constants";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -28,10 +26,6 @@ const AppBar = styled(MuiAppBar, {
     }),
   }),
 }));
-
-interface HeaderProps extends AppBarProps {
-  handleDrawerOpen: () => void;
-}
 
 const Header = (props: HeaderProps) => {
   const { handleDrawerOpen, open } = props;
