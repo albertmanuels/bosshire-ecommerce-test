@@ -1,4 +1,5 @@
 import { Product } from "./product";
+import { DeepRequired } from "./utils";
 
 export interface Cart {
   id: number;
@@ -16,6 +17,6 @@ export type EnrichedCart = {
   date: string;
   products: ({
     quantity: number;
-  } & Product)[];
+  } & DeepRequired<Product>)[];
 };
 
