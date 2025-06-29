@@ -67,9 +67,11 @@ const LoginPage = () => {
       }}
     >
       <Card sx={{ minWidth: "25vw" }}>
-        <CardHeader>
-          <h2>Sign In</h2>
-        </CardHeader>
+        <CardHeader
+          title="Bosshire Store Dashboard"
+          subheader="Sign In"
+          sx={{ textAlign: "center" }}
+        />
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack gap={3}>
@@ -89,7 +91,7 @@ const LoginPage = () => {
                 Login
               </Button>
               <Stack gap={1}>
-                <Typography>Admin account</Typography>
+                <Typography>Demo admin account:</Typography>
                 <Button
                   onClick={() => {
                     navigator.clipboard.writeText(ADMIN.username);
