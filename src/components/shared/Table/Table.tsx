@@ -22,7 +22,6 @@ import useTable from "./Table.hook";
 
 const Table = (props: TableProps) => {
   const {
-    tableData,
     tableHeader,
     isLoading = false,
     withSearch = false,
@@ -215,7 +214,7 @@ const Table = (props: TableProps) => {
         <TablePagination
           rowsPerPageOptions={[5, 10, 15]}
           component="div"
-          count={tableData?.length}
+          count={filteredProducts?.length}
           rowsPerPage={itemsPerPage}
           page={page}
           onPageChange={handleChangePage}
