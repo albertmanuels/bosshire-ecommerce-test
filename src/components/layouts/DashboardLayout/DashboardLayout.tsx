@@ -1,23 +1,17 @@
 "use client";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode } from "react";
 import Box from "@mui/material/Box";
 import { CssBaseline } from "@mui/material";
 import SidebarMenu from "./SidebarMenu";
 import Header from "./Header";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { sidebarItems } from "@/constants/navigation";
+import useDashboardLayout from "./DashboardLayout.hook";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
-  const [open, setOpen] = useState(false);
   const { user } = useAuthStore();
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const { open, handleDrawerClose, handleDrawerOpen } = useDashboardLayout();
 
   return (
     <Box sx={{ display: "flex" }}>
