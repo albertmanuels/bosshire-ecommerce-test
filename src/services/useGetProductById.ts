@@ -4,6 +4,26 @@ import { ONE_MINUTE } from '@/constants/globals';
 import { DeepRequired } from '@/types/utils';
 import { Product } from '@/types/product';
 
+/**
+ * React Query hook to fetch a single product by its ID from the FakeStoreAPI.
+ *
+ * This hook retrieves detailed product information from the endpoint `${API_URL}/products/:id`,
+ * and returns a deeply required product type (`DeepRequired<Product>`) to ensure all fields
+ * are present and fully typed.
+ *
+ * Features:
+ * - Typed response with all fields required
+ * - Caches product data using `queryKey: ['product', id]`
+ * - Prevents unnecessary refetching for 1 minute (`staleTime`)
+ *
+ * @param {Object} params - Parameters object
+ * @param {number} params.id - The product ID to fetch
+ *
+ * @returns The result of the `useQuery` hook, including `data`, `isLoading`, `error`, etc.
+ *
+ * @example
+ * const { data: product, isLoading } = useGetProductById({ id: 5 });
+ */
 const useGetProductById = ({id}: {id: number}) => {
   const query =  useQuery<DeepRequired<Product>>({
     queryFn: async (): Promise<DeepRequired<Product>> => {
