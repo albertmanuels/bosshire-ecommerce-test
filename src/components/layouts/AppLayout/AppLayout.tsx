@@ -1,5 +1,4 @@
 import "@/styles/globals.css";
-import "@/styles/components.css";
 import React, { ReactNode } from "react";
 import Stack from "@mui/material/Stack";
 
