@@ -8,28 +8,52 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { loginActions } from "./actions";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { ADMIN } from "@/constants/user";
 import { ContentCopy } from "@mui/icons-material";
 import { Typography } from "@mui/material";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 type FormValues = {
   username: string;
   password: string;
 };
 
+const LoginSchema = yup.object().shape({
+  username: yup
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .required("Username is required"),
+  password: yup
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .required("Password is required"),
+});
+
 const LoginPage = () => {
   const router = useRouter();
-  const { register, handleSubmit, setError } = useForm<FormValues>({
+  const {
+    handleSubmit,
+    setError,
+    control,
+    formState: { errors },
+  } = useForm<FormValues>({
     defaultValues: {
       username: "",
       password: "",
     },
+    resolver: yupResolver(LoginSchema),
+    mode: "onChange",
   });
 
   const onSubmit = async (data: FormValues) => {
+    if (errors.username || errors.password) {
+      return;
+    }
+
     const formData = new FormData();
     formData.append("username", data.username);
     formData.append("password", data.password);
@@ -73,44 +97,70 @@ const LoginPage = () => {
           sx={{ textAlign: "center" }}
         />
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack gap={3}>
-              <TextField
-                type="text"
-                placeholder="username"
-                label="Username"
-                {...register("username")}
-              />
-              <TextField
-                type="password"
-                placeholder="password"
-                label="Password"
-                {...register("password")}
-              />
-              <Button variant="contained" type="submit">
-                Login
+          <Stack gap={3}>
+            <Controller
+              name="username"
+              control={control}
+              render={({ field, fieldState: { invalid, error, isDirty } }) => (
+                <Stack>
+                  <TextField
+                    {...field}
+                    type="text"
+                    placeholder="username"
+                    label="Username"
+                    error={isDirty && invalid && !!error?.message}
+                  />
+                  {error && (
+                    <Typography variant="caption" color="error">
+                      {error.message}
+                    </Typography>
+                  )}
+                </Stack>
+              )}
+            />
+            <Controller
+              name="password"
+              control={control}
+              render={({ field, fieldState: { error, invalid, isDirty } }) => (
+                <Stack>
+                  <TextField
+                    {...field}
+                    type="password"
+                    placeholder="password"
+                    label="Password"
+                    error={isDirty && invalid && !!error?.message}
+                  />
+                  {error && (
+                    <Typography variant="caption" color="error">
+                      {error.message}
+                    </Typography>
+                  )}
+                </Stack>
+              )}
+            />
+            <Button variant="contained" onClick={handleSubmit(onSubmit)}>
+              Login
+            </Button>
+            <Stack gap={1}>
+              <Typography>Demo admin account:</Typography>
+              <Button
+                onClick={() => {
+                  navigator.clipboard.writeText(ADMIN.username);
+                }}
+              >
+                Username: {ADMIN.username}
+                <ContentCopy />
               </Button>
-              <Stack gap={1}>
-                <Typography>Demo admin account:</Typography>
-                <Button
-                  onClick={() => {
-                    navigator.clipboard.writeText(ADMIN.username);
-                  }}
-                >
-                  Username: {ADMIN.username}
-                  <ContentCopy />
-                </Button>
-                <Button
-                  onClick={() => {
-                    navigator.clipboard.writeText(ADMIN.password);
-                  }}
-                >
-                  <p>Password: {ADMIN.password}</p>
-                  <ContentCopy />
-                </Button>
-              </Stack>
+              <Button
+                onClick={() => {
+                  navigator.clipboard.writeText(ADMIN.password);
+                }}
+              >
+                <p>Password: {ADMIN.password}</p>
+                <ContentCopy />
+              </Button>
             </Stack>
-          </form>
+          </Stack>
         </CardContent>
       </Card>
     </Box>
