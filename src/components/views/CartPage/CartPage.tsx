@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -10,65 +10,26 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useCartStore } from "@/stores/useCartStore";
 import Image from "next/image";
 import { Delete, ShoppingCart, Visibility } from "@mui/icons-material";
 import NumberStepper from "@/components/shared/NumberStepper";
-import usePostNewCart from "@/services/usePostNewCart";
-import { ADMIN } from "@/constants/user";
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
-import { getNextCartId } from "@/helpers/global";
 import Link from "next/link";
-import getEnrichedCart from "@/helpers/getEnrichedCarts";
 import ProductDetailModal from "@/components/shared/_features/ProductDetailModal";
+import useCart from "./Cart.hook";
 
 const CartPage = () => {
-  const router = useRouter();
-  const [open, setOpen] = useState(false);
-  const [currentViewProductId, setCurrentViewProductId] = useState<
-    number | null
-  >(null);
-
-  const { cart, updateQuantity, removeItemFromCart, allCarts, checkout } =
-    useCartStore();
-
-  const totalPrice = useCartStore((state) =>
-    state.cart.reduce(
-      (sum, product) => sum + (product?.price ?? 0) * (product.quantity ?? 0),
-      0
-    )
-  ).toFixed(2);
-
-  const { mutate, isPending } = usePostNewCart({
-    onSuccess: (data) => {
-      const payload = {
-        ...data,
-        id: getNextCartId(allCarts),
-      };
-
-      const enriched = getEnrichedCart(payload, cart);
-      checkout(enriched);
-      toast.success("Checkout is successful!");
-      router.push("/");
-    },
-    onError: (error) => {
-      toast.error("Checkout failed!");
-      console.error(error);
-    },
-  });
-
-  const handleOnCheckout = () => {
-    mutate({
-      id: getNextCartId(allCarts),
-      userId: ADMIN.id,
-      date: new Date().toISOString(),
-      products: cart.map((product) => ({
-        productId: product.id,
-        quantity: product.quantity,
-      })),
-    });
-  };
+  const {
+    open,
+    setOpen,
+    cart,
+    isPending,
+    updateQuantity,
+    removeItemFromCart,
+    handleOnCheckout,
+    currentViewProductId,
+    setCurrentViewProductId,
+    totalPrice,
+  } = useCart();
 
   return (
     <Box>
