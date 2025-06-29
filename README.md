@@ -21,6 +21,7 @@ This project is an admin dashboard built as part of a frontend technical test.
 | **React Hook Form** | Form state management and validation   |
 | **Yup**          | Schema-based form validation             |
 | **React Toastify** | User-friendly toast notifications      |
+| **ESlint** | Linting for code quality     |
 
 ## 🧪 Features
 🔐 Login/logout authentication (Mocked admin with secure cookie session)
