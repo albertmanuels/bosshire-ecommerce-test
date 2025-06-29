@@ -52,7 +52,7 @@ This project is an admin dashboard built as part of a frontend technical test.
 ### 📦 Installation
 
 ```bash
-git clone https://github.com/albertmanuels/bosshire-admin-dashboard.git
+https://github.com/albertmanuels/bosshire-ecommerce-test.git
 cd bosshire-admin-dashboard
 npm install
 ```
