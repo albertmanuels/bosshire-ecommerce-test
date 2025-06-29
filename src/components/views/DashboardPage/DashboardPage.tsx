@@ -1,30 +1,26 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import useGetAllProducts from "@/services/useGetAllProducts";
 import { Visibility, AddShoppingCart } from "@mui/icons-material";
-import Table from "../shared/Table";
-import { TableHeader } from "../shared/Table/Table";
 import { useCartStore } from "@/stores/useCartStore";
 import { Chip } from "@mui/material";
-import ProductDetailModal from "../shared/_features/ProductDetailModal";
+import { TableHeader } from "@/components/shared/Table/Table.types";
+import Table from "@/components/shared/Table";
+import ProductDetailModal from "@/components/shared/_features/ProductDetailModal";
+import useDashboard from "./Dashboard.hook";
 
 const DashboardPage = () => {
   const { addToCart } = useCartStore();
-  const { data: products, isLoading } = useGetAllProducts();
-  const [open, setOpen] = useState(false);
-  const [currentViewProductId, setCurrentViewProductId] = useState(null);
 
-  const tableData =
-    products?.map((product) => ({
-      ...product,
-      category: product.category,
-      image: product.image,
-      title: product.title,
-      id: product.id,
-      price: product.price,
-    })) || [];
+  const {
+    tableData,
+    isLoading,
+    open,
+    setOpen,
+    currentViewProductId,
+    setCurrentViewProductId,
+  } = useDashboard();
 
   const tableHeader: TableHeader[] = [
     {
@@ -125,7 +121,6 @@ const DashboardPage = () => {
         isLoading={isLoading}
         itemsPerPage={5}
       />
-
       <ProductDetailModal
         open={open}
         onClose={() => setOpen(false)}
