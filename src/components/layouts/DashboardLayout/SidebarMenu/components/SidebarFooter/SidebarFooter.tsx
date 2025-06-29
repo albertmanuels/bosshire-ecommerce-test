@@ -1,13 +1,9 @@
 import React from "react";
-import {
-  Box,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
-import { SidebarFooterProps } from "./SidebarFooter.types";
+
 import { AccountCircle, Logout } from "@mui/icons-material";
+import { Box, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+
+import { SidebarFooterProps } from "./SidebarFooter.types";
 
 const SidebarFooter = (props: SidebarFooterProps) => {
   const { logout, open, username } = props;

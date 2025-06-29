@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 
 const useDashboardLayout = () => {
   const [open, setOpen] = useState(false);
@@ -14,8 +14,8 @@ const useDashboardLayout = () => {
   return {
     open,
     handleDrawerClose,
-    handleDrawerOpen
-  }
-}
+    handleDrawerOpen,
+  };
+};
 
-export default useDashboardLayout
+export default useDashboardLayout;

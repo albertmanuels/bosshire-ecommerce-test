@@ -1,9 +1,12 @@
 "use client";
 import React from "react";
+
 import { Box, Typography } from "@mui/material";
+
 import Table from "@/components/shared/Table";
-import CartDetailModal from "./CartDetailModal";
+
 import useAllCarts from "./AllCarts.hook";
+import CartDetailModal from "./CartDetailModal";
 
 const AllCartsPage = () => {
   const {

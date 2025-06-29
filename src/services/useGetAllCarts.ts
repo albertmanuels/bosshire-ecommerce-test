@@ -1,6 +1,7 @@
-import { API_URL } from '@/constants/config'
-import { ONE_MINUTE } from '@/constants/globals'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+
+import { API_URL } from '@/constants/config';
+import { ONE_MINUTE } from '@/constants/globals';
 import { Cart } from '@/types/cart';
 
 /**
@@ -23,17 +24,17 @@ import { Cart } from '@/types/cart';
 const useGetAllCarts = () => {
   const query = useQuery<Cart[]>({
     placeholderData: keepPreviousData,
-    queryFn: async (): Promise<Cart[]>  => {
-      const res = await fetch(`${API_URL}/carts`)
-      const data = await res.json()
+    queryFn: async (): Promise<Cart[]> => {
+      const res = await fetch(`${API_URL}/carts`);
+      const data = await res.json();
 
-      return data
+      return data;
     },
     queryKey: ["carts"],
-    staleTime: ONE_MINUTE
-  })
+    staleTime: ONE_MINUTE,
+  });
 
-  return query
-}
+  return query;
+};
 
-export default useGetAllCarts
+export default useGetAllCarts;

@@ -1,1 +1,1 @@
-export {default} from "./NumberStepper"
+export { default } from "./NumberStepper";

@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+
+import { Delete, ShoppingCart, Visibility } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -11,11 +13,13 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import { Delete, ShoppingCart, Visibility } from "@mui/icons-material";
-import NumberStepper from "@/components/shared/NumberStepper";
 import Link from "next/link";
+
 import ProductDetailModal from "@/components/shared/_features/ProductDetailModal";
+import NumberStepper from "@/components/shared/NumberStepper";
+
 import useCart from "./Cart.hook";
+
 import { pathname } from "@/constants/navigation";
 
 const CartPage = () => {

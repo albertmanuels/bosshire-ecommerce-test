@@ -1,8 +1,9 @@
-"use server"
-import { API_URL } from "@/constants/config"
-import { ADMIN } from "@/constants/user"
-import { createSession } from "@/utils/session"
+"use server";
 import * as yup from "yup";
+
+import { API_URL } from "@/constants/config";
+import { ADMIN } from "@/constants/user";
+import { createSession } from "@/utils/session";
 
 const LoginSchema = yup.object().shape({
   username: yup.string().required("Username is required"),
@@ -15,36 +16,36 @@ const LoginSchema = yup.object().shape({
 export async function loginActions(_: unknown, formData: FormData) {
   const raw = {
     username: formData.get("username"),
-    password: formData.get("password")
-  }
+    password: formData.get("password"),
+  };
 
   try {
-     const credentials = await LoginSchema.validate(raw, {abortEarly: false})
-    if(credentials.username === ADMIN.username && credentials.password === ADMIN.password) {
+     const credentials = await LoginSchema.validate(raw, { abortEarly: false });
+    if (credentials.username === ADMIN.username && credentials.password === ADMIN.password) {
       const res = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(credentials)
-      })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(credentials),
+      });
 
-        if(!res.ok) {
-          throw new Error(res.statusText)
+        if (!res.ok) {
+          throw new Error(res.statusText);
         }
 
-        const data = await res.json()
-        const token = data.token
+        const data = await res.json();
+        const token = data.token;
 
-        await createSession(token)
+        await createSession(token);
 
         return {
           success: true,
-          error: null
-        }
+          error: null,
+        };
     } else {
       return {
         success: false,
-        error: "Your are not allowed to access the dashboard!"
-      }
+        error: "Your are not allowed to access the dashboard!",
+      };
     }
    
   } catch (error) {
@@ -56,7 +57,7 @@ export async function loginActions(_: unknown, formData: FormData) {
 
       return {
         success: false,
-        fieldErrors
+        fieldErrors,
       };
     }
 

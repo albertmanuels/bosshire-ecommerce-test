@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
+
 import { FormatListBulleted } from "@mui/icons-material";
-import useGetAllCarts from "@/services/useGetAllCarts";
-import { formatDateToLong } from "@/utils/date";
-import { useCartStore } from "@/stores/useCartStore";
-import useGetAllProducts from "@/services/useGetAllProducts";
-import { Product } from "@/types/product";
-import getEnrichedCart from "@/helpers/getEnrichedCarts";
+
 import { TableHeader } from "@/components/shared/Table/Table.types";
+
+import getEnrichedCart from "@/helpers/getEnrichedCarts";
+import useGetAllCarts from "@/services/useGetAllCarts";
+import useGetAllProducts from "@/services/useGetAllProducts";
+import { useCartStore } from "@/stores/useCartStore";
+import { Product } from "@/types/product";
+import { formatDateToLong } from "@/utils/date";
 
 const useAllCarts = () => {
   const { allCarts, setToAllCarts } = useCartStore();
@@ -18,7 +21,7 @@ const useAllCarts = () => {
   const { data: products } = useGetAllProducts();
 
   useEffect(() => {
-    if (allCarts.length == 0 && isSuccess) {
+    if (allCarts.length === 0 && isSuccess) {
       carts?.map((cart) => {
         const enriched = getEnrichedCart(cart, products as Product[]);
         setToAllCarts(enriched);

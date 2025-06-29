@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
  * Duration of one day in milliseconds.
  * Used to set the cookie expiration time.
  */
-const oneDay = 1 * 24 * 60 * 60 * 1000
+const oneDay = 1 * 24 * 60 * 60 * 1000;
 
 /**
  * Creates a secure HTTP-only session cookie with a 1-day expiration.
@@ -23,8 +23,8 @@ export async function createSession(token: string) {
     expires: expiresAt, 
     httpOnly: true, 
     secure: true, 
-    path: "/" 
-  })
+    path: "/", 
+  });
 }
 
 /**

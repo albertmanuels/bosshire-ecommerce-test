@@ -1,1 +1,1 @@
-export {default} from "./SidebarFooter"
+export { default } from "./SidebarFooter";

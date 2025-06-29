@@ -1,7 +1,7 @@
-import { Metadata } from "next"
+import { Metadata } from "next";
 
-export {default} from "@/components/views/LoginPage"
+export { default } from "@/components/views/LoginPage";
 
 export const metadata: Metadata = {
   title: "Login page | Bosshire store",
-}
+};

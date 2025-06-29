@@ -1,5 +1,6 @@
-import { ADMIN } from '@/constants/user';
 import { create } from 'zustand';
+
+import { ADMIN } from '@/constants/user';
 
 export type User = typeof ADMIN
 
@@ -29,7 +30,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
   login: (user) => set({
     isAuthenticated: true,
-    user
+    user,
   }),
   logout: () => set({ user: null, isAuthenticated: false }),
 }));

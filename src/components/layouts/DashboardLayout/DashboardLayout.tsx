@@ -1,12 +1,16 @@
 "use client";
 import React, { ReactNode } from "react";
-import Box from "@mui/material/Box";
+
 import { CssBaseline } from "@mui/material";
-import SidebarMenu from "./SidebarMenu";
-import Header from "./Header";
-import { useAuthStore } from "@/stores/useAuthStore";
-import { sidebarItems } from "@/constants/navigation";
+import Box from "@mui/material/Box";
+
 import useDashboardLayout from "./DashboardLayout.hook";
+import Header from "./Header";
+import SidebarMenu from "./SidebarMenu";
+
+import { sidebarItems } from "@/constants/navigation";
+import { useAuthStore } from "@/stores/useAuthStore";
+
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const { user } = useAuthStore();

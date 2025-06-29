@@ -1,7 +1,8 @@
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+
 import { API_URL } from '@/constants/config';
 import { ONE_MINUTE } from '@/constants/globals';
 import { Product } from '@/types/product';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 /**
  * React Query hook to fetch all products from the FakeStoreAPI.
@@ -30,10 +31,10 @@ const useGetAllProducts = () => {
       return data as Product[];
     },
     queryKey: ["products"],
-    staleTime: ONE_MINUTE
+    staleTime: ONE_MINUTE,
   });
 
-  return query
-}
+  return query;
+};
 
-export default useGetAllProducts
+export default useGetAllProducts;

@@ -8,4 +8,4 @@
  * @example
  * setTimeout(() => console.log("1 minute passed"), ONE_MINUTE);
  */
-export const ONE_MINUTE = 60 * 1000
+export const ONE_MINUTE = 60 * 1000;

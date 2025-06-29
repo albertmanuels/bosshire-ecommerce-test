@@ -1,5 +1,6 @@
-import { SvgIconProps } from "@mui/material";
 import { ComponentType } from "react";
+
+import { SvgIconProps } from "@mui/material";
 
 type SidebarItem = {
   key: string;

@@ -1,9 +1,9 @@
 import js from "@eslint/js";
 import { defineConfig } from "eslint/config";
 import pluginImport from "eslint-plugin-import";
-import importNewlines from "eslint-plugin-import-newlines";
+import pluginNewlines from "eslint-plugin-import-newlines";
 import pluginReact from "eslint-plugin-react";
-import simpleImportSort from "eslint-plugin-simple-import-sort";
+import pluginSimpleImportSort from "eslint-plugin-simple-import-sort";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -12,30 +12,63 @@ const WARN = 1;
 const ERROR = 2;
 
 export default defineConfig([
-  js.configs.recommended,
-  tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
+  // Base JavaScript rules
+  {
+    files: ["**/*.{js,mjs,cjs}"],
+    languageOptions: {
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+      },
+      globals: globals.browser,
+    },
+    plugins: {
+      js,
+    },
+    extends: ["js/recommended"],
+  },
 
+  // TypeScript support
+  ...tseslint.configs.recommended,
+
+  // React + custom rules + all plugins
   {
     files: ["**/*.{js,cjs,mjs,ts,cts,mts,jsx,tsx}"],
     languageOptions: {
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
       globals: {
         ...globals.browser,
         ...globals.node,
       },
-      parserOptions: {
-        sourceType: "module",
-        ecmaVersion: "latest",
+    },
+    settings: {
+      react: {
+        version: "detect",
       },
     },
     plugins: {
+      react: pluginReact,
       import: pluginImport,
-      "simple-import-sort": simpleImportSort,
-      "import-newlines": importNewlines,
+      "import-newlines": pluginNewlines,
     },
     rules: {
+      ...pluginReact.configs.recommended.rules,
       "react/no-unescaped-entities": OFF,
+      "react/jsx-indent": [ERROR, 2],
+
+      eqeqeq: WARN,
       "no-eval": [ERROR, { allowIndirect: true }],
+      "no-multi-spaces": [ERROR],
+      "no-undef": OFF,
+      "no-unused-vars": OFF,
+      "comma-spacing": [WARN, { before: false, after: true }],
+      semi: [WARN, "always"],
       "object-curly-spacing": [
         ERROR,
         "always",
@@ -45,26 +78,27 @@ export default defineConfig([
         },
       ],
       "keyword-spacing": [WARN, { after: true }],
-      eqeqeq: WARN,
+
+      // Import rules
       "import/export": WARN,
-      "import-newlines/enforce": [
-        WARN,
-        {
-          items: 5,
-          "max-len": 120,
-          semi: false,
-        },
-      ],
       "import/order": [
         WARN,
         {
           alphabetize: {
-            caseInsensitive: true,
             order: "asc",
+            caseInsensitive: true,
             orderImportKind: "asc",
           },
           distinctGroup: true,
-          groups: ["external", "internal", "parent", "sibling", "type"],
+          groups: [
+            "builtin",
+            "external",
+            "internal",
+            "parent",
+            "sibling",
+            "index",
+            "type",
+          ],
           "newlines-between": "always",
           pathGroups: [
             {
@@ -81,32 +115,26 @@ export default defineConfig([
           pathGroupsExcludedImportTypes: ["react", "type"],
         },
       ],
-      "no-multi-spaces": [ERROR],
-      "comma-spacing": [WARN, { before: false, after: true }],
-      "comma-dangle": [
+      "import-newlines/enforce": [
         WARN,
         {
-          arrays: "only-multiline",
-          exports: "always-multiline",
-          functions: "only-multiline",
-          imports: "always-multiline",
-          objects: "always-multiline",
+          items: 5,
+          "max-len": 120,
+          semi: false,
         },
       ],
-      "simple-import-sort/imports": WARN,
-      "simple-import-sort/exports": WARN,
+
+      // Statement formatting
       "padding-line-between-statements": [
         WARN,
         { blankLine: "always", prev: "import", next: "*" },
         { blankLine: "any", prev: "import", next: "import" },
-        { blankLine: "always", prev: "import", next: "function" },
-        { blankLine: "always", prev: "import", next: "const" },
-        { blankLine: "always", prev: "import", next: "let" },
+        {
+          blankLine: "always",
+          prev: "import",
+          next: ["const", "let", "var", "function"],
+        },
       ],
-      "react/jsx-indent": [ERROR, 2],
-      semi: [WARN, "always"],
-      "no-undef": OFF,
-      "no-unused-vars": OFF,
     },
   },
 ]);

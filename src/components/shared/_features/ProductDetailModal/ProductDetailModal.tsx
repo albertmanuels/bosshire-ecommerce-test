@@ -1,5 +1,6 @@
 "use client";
-import useGetProductById from "@/services/useGetProductById";
+import React from "react";
+
 import { Close, Star } from "@mui/icons-material";
 import {
   Box,
@@ -13,7 +14,8 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+
+import useGetProductById from "@/services/useGetProductById";
 
 type ProductDetailModalProps = {
   onClose: () => void;

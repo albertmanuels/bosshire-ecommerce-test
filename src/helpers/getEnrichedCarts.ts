@@ -61,8 +61,8 @@ const getEnrichedCart = (cart: Cart, products: Product[] ) => {
           quantity: item.quantity,
         };
       }),
-  }
-  return enrichedCart
-}
+  };
+  return enrichedCart;
+};
 
-export default getEnrichedCart
+export default getEnrichedCart;

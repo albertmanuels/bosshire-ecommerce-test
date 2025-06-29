@@ -1,8 +1,19 @@
-import { useCartStore } from "@/stores/useCartStore";
 import { CartDetailModalProps } from "./CartDetailModal.types";
 
+import { useCartStore } from "@/stores/useCartStore";
+
+
+
+
+
+
+
+
+
+
+
 const useCartDetailModal = (props: CartDetailModalProps) => {
-  const {id} = props
+  const { id } = props;
 
   const { getCartDetailById } = useCartStore();
 
@@ -15,7 +26,7 @@ const useCartDetailModal = (props: CartDetailModalProps) => {
 
   return {
     totalPrice,
-    cartDetail
+    cartDetail,
   };
 };
 

@@ -1,7 +1,8 @@
-import { API_URL } from '@/constants/config'
-import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { ONE_MINUTE } from '@/constants/globals'
-import { Cart } from '@/types/cart'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+
+import { API_URL } from '@/constants/config';
+import { ONE_MINUTE } from '@/constants/globals';
+import { Cart } from '@/types/cart';
 
 /**
  * React Query hook to fetch a single cart by its ID from the FakeStoreAPI.
@@ -25,19 +26,19 @@ import { Cart } from '@/types/cart'
  * @example
  * const { data: cart, isLoading } = useGetCartById({ id: 3 });
  */
-const useGetCartById = ({id}:{id: number | null}, options?: Partial<UseQueryOptions<Cart>>) => {
+const useGetCartById = ({ id }:{id: number | null}, options?: Partial<UseQueryOptions<Cart>>) => {
   const query = useQuery<Cart>({
     queryFn: async (): Promise<Cart> => {
-      const res = await fetch(`${API_URL}/carts/${id}`)
-      const data = await res.json()
+      const res = await fetch(`${API_URL}/carts/${id}`);
+      const data = await res.json();
 
-      return data
+      return data;
     },
     queryKey: ["cart", id],
     staleTime: ONE_MINUTE,
-    ...options
-  })
-  return query
-}
+    ...options,
+  });
+  return query;
+};
 
-export default useGetCartById
+export default useGetCartById;

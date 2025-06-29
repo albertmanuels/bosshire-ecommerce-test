@@ -1,4 +1,4 @@
-import { ShoppingCart, ShoppingCartCheckout } from "@mui/icons-material"
+import { ShoppingCart, ShoppingCartCheckout } from "@mui/icons-material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 
 /**
@@ -22,8 +22,8 @@ export const pathname = {
   ALL_CARTS: "/all-carts",
   CART: "/cart",
   CHECKOUT: "/checkout",
-  LOGIN: "/login"
-}
+  LOGIN: "/login",
+};
 
 /**
  * List of navigation items used in the sidebar menu.

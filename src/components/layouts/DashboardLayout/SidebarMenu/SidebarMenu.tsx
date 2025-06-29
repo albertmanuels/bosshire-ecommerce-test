@@ -1,19 +1,21 @@
 "use client";
 import React from "react";
-import { useTheme } from "@mui/material/styles";
-import { Badge, Divider, List } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
+
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { Badge, Divider, List } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { usePathname } from "next/navigation";
+import { useTheme } from "@mui/material/styles";
 import Link from "next/link";
-import { SidebarMenuProps } from "./SidebarMenu.types";
-import useSidebarMenu from "./SidebarMenu.hook";
+import { usePathname } from "next/navigation";
+
 import SidebarFooter from "./components/SidebarFooter";
+import useSidebarMenu from "./SidebarMenu.hook";
+import { SidebarMenuProps } from "./SidebarMenu.types";
 
 const SidebarMenu = (props: SidebarMenuProps) => {
   const { open, handleDrawerClose, username, sidebarItems } = props;

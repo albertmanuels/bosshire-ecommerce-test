@@ -1,8 +1,9 @@
-import { API_URL } from '@/constants/config'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query';
+
+import { API_URL } from '@/constants/config';
 import { ONE_MINUTE } from '@/constants/globals';
-import { DeepRequired } from '@/types/utils';
 import { Product } from '@/types/product';
+import { DeepRequired } from '@/types/utils';
 
 /**
  * React Query hook to fetch a single product by its ID from the FakeStoreAPI.
@@ -24,18 +25,18 @@ import { Product } from '@/types/product';
  * @example
  * const { data: product, isLoading } = useGetProductById({ id: 5 });
  */
-const useGetProductById = ({id}: {id: number}) => {
-  const query =  useQuery<DeepRequired<Product>>({
+const useGetProductById = ({ id }: {id: number}) => {
+  const query = useQuery<DeepRequired<Product>>({
     queryFn: async (): Promise<DeepRequired<Product>> => {
-      const res = await fetch(`${API_URL}/products/${id}`)
-      const data = await res.json()
+      const res = await fetch(`${API_URL}/products/${id}`);
+      const data = await res.json();
 
-      return data
+      return data;
     },
     staleTime: ONE_MINUTE,
-    queryKey: ["product", id]
-  })
-  return query
-}
+    queryKey: ["product", id],
+  });
+  return query;
+};
 
-export default useGetProductById
+export default useGetProductById;

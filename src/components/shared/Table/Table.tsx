@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
+
 import {
   Box,
+  Button,
   CircularProgress,
   IconButton,
   Paper,
@@ -13,12 +15,13 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Button,
 } from "@mui/material";
-import SearchBar from "../SearchBar";
 import Image from "next/image";
-import { TableData, TableHeader, TableProps } from "./Table.types";
+
+import SearchBar from "../SearchBar";
+
 import useTable from "./Table.hook";
+import { TableData, TableHeader, TableProps } from "./Table.types";
 
 const Table = (props: TableProps) => {
   const {

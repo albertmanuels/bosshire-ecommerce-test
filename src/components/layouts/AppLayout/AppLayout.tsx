@@ -1,12 +1,14 @@
 import "@/styles/globals.css";
+
 import React, { ReactNode } from "react";
+
 import Stack from "@mui/material/Stack";
-
-import type { Metadata } from "next";
-
 import { Roboto } from "next/font/google";
 import { cookies } from "next/headers";
+
 import Providers from "../Providers";
+
+import type { Metadata } from "next";
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700"],

@@ -1,1 +1,1 @@
-export {default} from "@/components/layouts/AuthLayout"
+export { default } from "@/components/layouts/AuthLayout";

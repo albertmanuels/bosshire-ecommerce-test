@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+
+import { Close } from "@mui/icons-material";
 import {
   Box,
   Chip,
@@ -10,12 +12,15 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
+
 import Table from "@/components/shared/Table";
-import { Close } from "@mui/icons-material";
-import { formatDateToLong } from "@/utils/date";
 import { TableHeader } from "@/components/shared/Table/Table.types";
-import { CartDetailModalProps } from "./CartDetailModal.types";
+
 import useCartDetailModal from "./CartDetailModal.hook";
+import { CartDetailModalProps } from "./CartDetailModal.types";
+
+import { formatDateToLong } from "@/utils/date";
+
 
 const CartDetailModal = (props: CartDetailModalProps) => {
   const { open, onClose } = props;

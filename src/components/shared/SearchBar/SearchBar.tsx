@@ -1,6 +1,8 @@
 import React from "react";
-import { InputAdornment, TextField } from "@mui/material";
+
 import { Search } from "@mui/icons-material";
+import { InputAdornment, TextField } from "@mui/material";
+
 import { SearchBarProps } from "./SearchBar.types";
 
 const SearchBar = (props: SearchBarProps) => {

@@ -1,11 +1,24 @@
 "use client";
-import theme from "@/utils/theme";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
-import { ThemeProvider } from "@mui/material/styles";
 import React, { ReactNode } from "react";
-import { AuthProvider } from "./AuthProvider";
-import { ToastContainer } from "react-toastify";
+
+import { ThemeProvider } from "@mui/material/styles";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ToastContainer } from "react-toastify";
+
+import { AuthProvider } from "./AuthProvider";
+
+import theme from "@/utils/theme";
+
+
+
+
+
+
+
+
+
+
 
 type Props = {
   children: ReactNode;

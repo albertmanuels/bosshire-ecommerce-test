@@ -1,7 +1,7 @@
-import { Metadata } from "next"
+import { Metadata } from "next";
 
-export {default} from "@/components/views/AllCartsPage"
+export { default } from "@/components/views/AllCartsPage";
 
 export const metadata: Metadata = {
-  title: "All Carts | Bosshire store"
-}
+  title: "All Carts | Bosshire store",
+};

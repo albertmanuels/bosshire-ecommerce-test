@@ -8,10 +8,10 @@
  * getNextCartId([{ id: 1 }, { id: 5 }, { id: 3 }]); // 6
  * getNextCartId([]); // 1
  */
-export const getNextCartId = (carts: { id: number }[]): number  => {
+export const getNextCartId = (carts: { id: number }[]): number => {
   const ids = carts.map((c) => c.id);
   return ids.length > 0 ? Math.max(...ids) + 1 : 1;
-}
+};
 
 /**
  * Recursively searches through a deeply nested object or array structure
@@ -58,4 +58,4 @@ export const deepSearchByKey = (obj: unknown, targetKey: string, searchTerm: str
   }
 
   return false;
-}
+};

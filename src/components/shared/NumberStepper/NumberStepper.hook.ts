@@ -1,8 +1,9 @@
-import { ChangeEvent } from 'react'
+import { ChangeEvent } from 'react';
+
 import { NumberStepperProps } from './NumberStepper.types';
 
 const useNumberStepper = (props: NumberStepperProps) => {
-  const {onChange, value, max = 99, min = 1} = props
+  const { onChange, value, max = 99, min = 1 } = props;
 
     const handleDecrease = () => {
     if (value > min) {
@@ -28,8 +29,8 @@ const useNumberStepper = (props: NumberStepperProps) => {
     handleIncrease,
     handleInputChange,
     min,
-    max
-  }
-}
+    max,
+  };
+};
 
-export default useNumberStepper
+export default useNumberStepper;

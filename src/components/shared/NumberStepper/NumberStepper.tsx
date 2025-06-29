@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
-import { Box, IconButton, TextField } from "@mui/material";
+
 import { Add, Remove } from "@mui/icons-material";
+import { Box, IconButton, TextField } from "@mui/material";
+
 import useNumberStepper from "./NumberStepper.hook";
 import { NumberStepperProps } from "./NumberStepper.types";
 

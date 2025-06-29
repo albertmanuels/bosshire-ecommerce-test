@@ -1,13 +1,16 @@
 "use client";
 import React from "react";
-import { styled } from "@mui/material/styles";
+
+import MenuIcon from "@mui/icons-material/Menu";
 import MuiAppBar from "@mui/material/AppBar";
+import IconButton from "@mui/material/IconButton";
+import { styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import { AppBarProps, HeaderProps } from "./Header.types";
+
 import { drawerWidth } from "../DashboardLayout.constants";
+
+import { AppBarProps, HeaderProps } from "./Header.types";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",

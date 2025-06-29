@@ -1,7 +1,8 @@
-import { API_URL } from '@/constants/config'
-import { ONE_MINUTE } from '@/constants/globals'
-import { User } from '@/stores/useAuthStore'
-import {  useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+
+import { API_URL } from '@/constants/config';
+import { ONE_MINUTE } from '@/constants/globals';
+import { User } from '@/stores/useAuthStore';
 
 /**
  * React Query hook to fetch a single user by ID from the FakeStoreAPI.
@@ -25,20 +26,20 @@ import {  useQuery, UseQueryOptions } from '@tanstack/react-query'
  * @example
  * const { data: user, isLoading } = useGetUserById({ id: 3 });
  */
-const useGetUserById = ({id}: {id: number}, options?: Partial<UseQueryOptions<User>>) => {
+const useGetUserById = ({ id }: {id: number}, options?: Partial<UseQueryOptions<User>>) => {
   const query = useQuery({
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/users/${id}`)
-      const data = await res.json()
+      const res = await fetch(`${API_URL}/users/${id}`);
+      const data = await res.json();
 
-      return data
+      return data;
     },
     queryKey: ["user", id],
     staleTime: ONE_MINUTE,
-    ...options
-  })
+    ...options,
+  });
 
-  return query
-}
+  return query;
+};
 
-export default useGetUserById
+export default useGetUserById;

@@ -1,6 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
+
 import { TableProps } from "./Table.types";
+
 import { deepSearchByKey } from "@/helpers/global";
+
+
+
+
+
+
+
+
+
+
 
 const useTable = (props: TableProps) => {
   const {
@@ -25,7 +37,7 @@ const useTable = (props: TableProps) => {
   };
 
   const filteredProducts = useMemo(() => {
-    if (!!search) {
+    if (search) {
       return tableData.filter((data) =>
         deepSearchByKey(data, searchOptions?.searchBy, search)
       );
