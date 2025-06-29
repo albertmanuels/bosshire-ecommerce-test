@@ -7,79 +7,15 @@ import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { loginActions } from "./actions";
-import { Controller, useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { Controller } from "react-hook-form";
+
 import { ADMIN } from "@/constants/user";
 import { ContentCopy } from "@mui/icons-material";
 import { Typography } from "@mui/material";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-
-type FormValues = {
-  username: string;
-  password: string;
-};
-
-const LoginSchema = yup.object().shape({
-  username: yup
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Username is required"),
-  password: yup
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password is required"),
-});
+import useLogin from "./Login.hook";
 
 const LoginPage = () => {
-  const router = useRouter();
-  const {
-    handleSubmit,
-    setError,
-    control,
-    formState: { errors },
-  } = useForm<FormValues>({
-    defaultValues: {
-      username: "",
-      password: "",
-    },
-    resolver: yupResolver(LoginSchema),
-    mode: "onChange",
-  });
-
-  const onSubmit = async (data: FormValues) => {
-    if (errors.username || errors.password) {
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("username", data.username);
-    formData.append("password", data.password);
-
-    const result = await loginActions(null, formData);
-
-    if (result?.fieldErrors) {
-      for (const key in result.fieldErrors) {
-        setError(key as keyof FormValues, {
-          type: "server",
-          message: result.fieldErrors[key],
-        });
-      }
-
-      toast.error(result?.error);
-      return;
-    }
-
-    if (result?.error) {
-      toast.error(result.error);
-      return;
-    }
-
-    toast.success("Login successful!");
-    router.push("/");
-  };
+  const { control, handleSubmit, onSubmit } = useLogin();
 
   return (
     <Box
