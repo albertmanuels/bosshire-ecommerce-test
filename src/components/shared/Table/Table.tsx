@@ -62,6 +62,7 @@ type TableProps = {
   searchOptions?: {
     searchBy: "title";
   };
+  tableFooter?: any;
 };
 
 const Table = (props: TableProps) => {
@@ -74,6 +75,7 @@ const Table = (props: TableProps) => {
     searchOptions = {
       searchBy: "title",
     },
+    tableFooter,
     itemsPerPage: _itemPerPage = 5,
   } = props;
   const [page, setPage] = useState(0);
@@ -222,7 +224,7 @@ const Table = (props: TableProps) => {
     } else {
       return tableData;
     }
-  }, [search, tableData]);
+  }, [search, searchOptions?.searchBy, tableData]);
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", padding: 4 }}>
@@ -255,7 +257,7 @@ const Table = (props: TableProps) => {
         </Box>
       </Stack>
 
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer sx={{ maxHeight: 440, marginBottom: 2 }}>
         <MuiTable stickyHeader>
           <TableHead>{renderHeader()}</TableHead>
           <TableBody>
@@ -267,15 +269,22 @@ const Table = (props: TableProps) => {
           </TableBody>
         </MuiTable>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 15]}
-        component="div"
-        count={tableData?.length}
-        rowsPerPage={itemsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeItemsPerPage}
-      />
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent={tableFooter ? "space-between" : "flex-end"}
+      >
+        {tableFooter && <Box>{tableFooter}</Box>}
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 15]}
+          component="div"
+          count={tableData?.length}
+          rowsPerPage={itemsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeItemsPerPage}
+        />
+      </Stack>
     </Paper>
   );
 };
