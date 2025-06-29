@@ -11,22 +11,16 @@ import {
   Typography,
 } from "@mui/material";
 import Table from "@/components/shared/Table";
-import { TableHeader } from "@/components/shared/Table/Table";
 import { Close } from "@mui/icons-material";
-import { useCartStore } from "@/stores/useCartStore";
 import { formatDateToLong } from "@/utils/date";
-
-type CartDetailModalProps = {
-  open: boolean;
-  onClose: () => void;
-  id: number | null;
-};
+import { TableHeader } from "@/components/shared/Table/Table.types";
+import { CartDetailModalProps } from "./CartDetailModal.types";
+import useCartDetailModal from "./CartDetailModal.hook";
 
 const CartDetailModal = (props: CartDetailModalProps) => {
-  const { open, onClose, id } = props;
-  const { getCartDetailById } = useCartStore();
+  const { open, onClose } = props;
 
-  const cartDetail = getCartDetailById(id as number);
+  const { totalPrice, cartDetail } = useCartDetailModal(props);
 
   const tableHeader: TableHeader[] = [
     {
@@ -93,11 +87,6 @@ const CartDetailModal = (props: CartDetailModalProps) => {
       },
     },
   ];
-
-  const totalPrice = cartDetail.products.reduce(
-    (sum, product) => sum + product?.price * product.quantity,
-    0
-  );
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
