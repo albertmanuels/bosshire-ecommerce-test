@@ -1,12 +1,7 @@
 import React from "react";
 import { InputAdornment, TextField } from "@mui/material";
 import { Search } from "@mui/icons-material";
-
-type SearchBarProps = {
-  value: string;
-  placeholder?: string;
-  onChange: (value: string) => void;
-};
+import { SearchBarProps } from "./SearchBar.types";
 
 const SearchBar = (props: SearchBarProps) => {
   const {
