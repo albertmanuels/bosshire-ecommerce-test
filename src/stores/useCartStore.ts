@@ -16,6 +16,27 @@ interface CartState {
   getCartDetailById: (cartId: number) => EnrichedCart
 }
 
+/**
+ * Zustand store for managing cart state in a shopping application.
+ * 
+ * This store handles two main pieces of state:
+ * - `cart`: The current active cart (items in progress)
+ * - `allCarts`: A list of all past submitted (checked-out) carts
+ * 
+ * Features include:
+ * - Add/update/remove items from the current cart
+ * - Checkout (moves cart to allCarts and clears the cart)
+ * - Quantity adjustment
+ * - Lookup for a full cart by ID
+ * 
+ * Data is persisted in localStorage under the key `"cart-storage"` using Zustand middleware.
+ *
+ * @example
+ * const { cart, addToCart, checkout } = useCartStore();
+ * 
+ * addToCart({ id: 1, title: "Hat", quantity: 2 });
+ * checkout({ id: 11, userId: 5, products: cart });
+ */
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
