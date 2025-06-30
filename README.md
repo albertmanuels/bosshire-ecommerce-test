@@ -14,7 +14,7 @@ This project is an admin dashboard built as part of a frontend technical test.
 
 | Technology       | Description                              |
 |------------------|------------------------------------------|
-| **Next.js 14**   | App Router-based React framework          |
+| **Next.js 15**   | App Router-based React framework          |
 | **TypeScript**   | Strictly typed JavaScript                |
 | **Material UI v7** | UI component library     |
 | **Zustand**      | Lightweight global state management      |
